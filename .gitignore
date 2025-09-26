@@ -1,0 +1,48 @@
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Archivos de entorno virtual
+venv/
+env/
+.venv/
+ENV/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Archivos de migraciones compiladas
+*/migrations/__pycache__/
+
+# Archivos de base de datos local
+db.sqlite3
+
+# Archivos de logs
+*.log
+
+# Archivos de configuración local
+*.env
+.env.*
+
+# Archivos de IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos estáticos generados automáticamente
+staticfiles/
+media/
+
+# Archivos de cobertura/testing
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+PyWhatKit_DB.txt
+
+numeros.json

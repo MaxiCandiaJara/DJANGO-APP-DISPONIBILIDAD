@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<center>
+    <h1>CUIDADO!</h1>
+</center>
+
+<div class="container">
+
+    <p>Las siguientes opciones pueden afectar directamente a la informacion tanto en la nube como local.
+         Si no sabes lo que estas haciendo <strong>lee antes de presionar.</strong>
+    </p>
+
+
+
+
+    <div class="row">
+
+        <div class="col-sm-6">
+
+
+
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Cargar desde GitHub</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Como funciona?</h6>
+                    <p class="card-text">Tienes que abrir <strong>GitHub desktop</strong> y despues cargar la
+                        informacion que hay (Ahí presionas aquí abajito)
+                        esto te permitiria ocupar la ultima informacion cargada en la nube</p>
+                    <a href="cargar" class="btn btn-primary">Cargar</a>
+                </div>
+            </div>
+            <div class="col-sm-6"></div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Subir a GitHub</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Como funciona?</h6>
+                <p class="card-text">Tienes hacer todos los cambios que nesecites y despues subir la informacion que
+                    hay (Ahí presionas aquí abajito), despues desde <strong>GitHub desktop</strong>
+                    haz un commit en el repositorio</p>
+                <a href="subir" class="btn btn-primary">Subir</a>
+            </div>
+        </div>
+    </div>
+
+    {% if mensaje %}
+    <p>{{mensaje}}</p>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}

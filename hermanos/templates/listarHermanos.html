@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+
+{% block body %}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Disponibilidad Mañanas</th>
+            <th scope="col">Disponibilidad Tardes</th>
+            <th scope="col">Comentarios</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for hermano in hermanos %}
+        <tr>
+            <th scope="row">{{hermano.Nombre}}</th>
+            <td>{{ hermano.Manana_list|join:", " }}</td>
+            <td>{{ hermano.Tarde_list|join:", " }}</td>
+            <td>{{hermano.Comentario}}</td>
+        </tr>
+
+
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

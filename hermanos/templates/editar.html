@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block body %}
+{% if error %}
+
+
+
+    <p>{{error}}</p>
+
+
+
+{% endif %}
+
+
+{% if not error %}
+
+
+    
+
+<form action="editarHermano" class="row g-3" method="post"> {% csrf_token %}
+
+    <div class="col-md-4">
+        <label for="validationCustom01" class="form-label">Nombre y Apellido</label>
+        <input type="text" class="form-control" id="validationCustom01" value="{{Hermano.Nombre}}" name="nombre" required>
+    </div>
+
+
+
+    <label for="dias">Dias</label>
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="lunes" id="flexCheckDefault" name="dias"
+        {% if "lunes" in dias_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckDefault">
+            Lunes
+        </label>
+    </div>
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="martes" id="flexCheckDefault" name="dias"
+        {% if "martes" in dias_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckDefault">
+            Martes
+        </label>
+    </div>
+
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="miercoles" id="flexCheckDefault" name="dias"
+        {% if "miercoles" in dias_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckDefault">
+            Miercoles
+        </label>
+    </div>
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="jueves" id="flexCheckChecked" name="dias"
+        {% if "jueves" in dias_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckChecked">
+            Jueves
+        </label>
+    </div>
+
+
+    <div class="form-check col-md-1"> 
+        <input class="form-check-input" type="checkbox" value="viernes" id="flexCheckDefault" name="dias"
+        {% if "viernes" in dias_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckDefault">
+            Viernes
+        </label>
+    </div>
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="sabado" id="flexCheckChecked" name="dias"
+        {% if "sabado" in dias_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckChecked">
+            Sabado
+        </label>
+    </div>
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="domingo" id="flexCheckChecked" name="dias"
+        {% if "domingo" in dias_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckChecked">
+            Domingo
+        </label>
+    </div>
+
+    <div class="col-md-12"></div>
+
+
+    <label for="tardes">Tardes</label>
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="lunes" id="flexCheckDefault" name="tardes"
+        {% if "lunes" in tardes_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckDefault">
+            Lunes
+        </label>
+    </div>
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="martes" id="flexCheckChecked" name="tardes"
+        {% if "martes" in tardes_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckChecked">
+            Martes
+        </label>
+    </div>
+
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="miercoles" id="flexCheckDefault" name="tardes"
+        {% if "miercoles" in tardes_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckDefault">
+            Miercoles
+        </label>
+    </div>
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="jueves" id="flexCheckChecked" name="tardes"
+        {% if "jueves" in tardes_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckChecked">
+            Jueves
+        </label>
+    </div>
+
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="viernes" id="flexCheckDefault" name="tardes"
+        {% if "viernes" in tardes_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckDefault">
+            Viernes
+        </label>
+    </div>
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="sabado" id="flexCheckChecked" name="tardes"
+        {% if "sabado" in tardes_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckChecked">
+            Sabado
+        </label>
+    </div>
+
+    <div class="form-check col-md-1">
+        <input class="form-check-input" type="checkbox" value="domingo" id="flexCheckChecked" name="tardes"
+        {% if "domingo" in tardes_guardados %}checked{% endif %}>
+        <label class="form-check-label" for="flexCheckChecked">
+            Domingo
+        </label>
+    </div>
+    <div class="col-md-12"></div>
+    <div class="col-md-6">
+        <label for="validationCustom01" class="form-label">Comentarios</label>
+        <input type="text" class="form-control" id="validationCustom01" value="{{Hermano.Comentario}}" name="comentario">
+    </div>
+    <div class="col-md-6"></div>
+    <button type="submit" class="btn btn-primary col-md-4">Guardar Hermano</button>
+    <div class="col-md-2"></div>
+    <a href="buscar" class="btn btn-primary col-md-4">Volver</a>
+
+
+</form>
+
+
+
+{% endif %}
+
+{% endblock %}

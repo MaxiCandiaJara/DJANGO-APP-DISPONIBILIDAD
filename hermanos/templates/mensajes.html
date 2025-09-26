@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+
+{% if texto %}
+<p>{{texto}}</p>
+{% endif %}
+
+{% if mensaje %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Hermano</th>
+      <th scope="col">Mensaje</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for i in mensaje %}
+    <form action="wsp" method="post"> {% csrf_token %}
+      <tr>
+        <th scope="row">{{i.Nombre}}</th>
+        <td>{{i.Texto}}</td>
+        <td>
+           <input type="hidden" name="Numero" value="{{i.Numero}}">
+           <input type="hidden" name="Texto" value="{{i.Texto}}">
+           <button class="btn btn-primary" type="submit">Enviar wsp</button>
+          
+          </td>
+      </tr>
+     
+
+    </form>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% endblock %}
