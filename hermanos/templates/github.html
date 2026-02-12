@@ -1,56 +1,74 @@
 {% extends "base.html" %}
 
+{% block title %}Sincronizar{% endblock %}
+{% block page_title %}Sincronización con GitHub{% endblock %}
+{% block page_subtitle %}Carga o sube la información del sistema{% endblock %}
+
 {% block body %}
 
-<center>
-    <h1>CUIDADO!</h1>
-</center>
+<!-- Warning -->
+<div class="alert alert-glass alert-glass-warning d-flex align-items-start mb-4" role="alert">
+    <i class="bi bi-excl amation-triangle-fill me-2 mt-1" style="font-size:1.2rem;"></i>
+    <div>
+        <strong>¡Precaución!</strong> Las siguientes opciones pueden afectar directamente a la información tanto en la
+        nube como local.
+        Si no sabes lo que estás haciendo, <strong>lee antes de presionar.</strong>
+    </div>
+</div>
 
-<div class="container">
+{% if mensaje %}
+<div class="alert alert-glass alert-glass-success d-flex align-items-center mb-4" role="alert">
+    <i class="bi bi-check-circle-fill me-2" style="font-size:1.2rem;"></i>
+    {{ mensaje }}
+</div>
+{% endif %}
 
-    <p>Las siguientes opciones pueden afectar directamente a la informacion tanto en la nube como local.
-         Si no sabes lo que estas haciendo <strong>lee antes de presionar.</strong>
-    </p>
+<div class="row g-4 justify-content-center">
 
-
-
-
-    <div class="row">
-
-        <div class="col-sm-6">
-
-
-
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Cargar desde GitHub</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Como funciona?</h6>
-                    <p class="card-text">Tienes que abrir <strong>GitHub desktop</strong> y despues cargar la
-                        informacion que hay (Ahí presionas aquí abajito)
-                        esto te permitiria ocupar la ultima informacion cargada en la nube</p>
-                    <a href="cargar" class="btn btn-primary">Cargar</a>
-                </div>
+    <!-- Cargar desde GitHub -->
+    <div class="col-md-6">
+        <div class="glass-card h-100">
+            <div class="text-center mb-3">
+                <i class="bi bi-cloud-download" style="font-size: 2.5rem; color: var(--blue-accent);"></i>
             </div>
-            <div class="col-sm-6"></div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Subir a GitHub</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Como funciona?</h6>
-                <p class="card-text">Tienes hacer todos los cambios que nesecites y despues subir la informacion que
-                    hay (Ahí presionas aquí abajito), despues desde <strong>GitHub desktop</strong>
-                    haz un commit en el repositorio</p>
-                <a href="subir" class="btn btn-primary">Subir</a>
+            <h5 class="text-center mb-2" style="font-weight: 700;">Cargar desde GitHub</h5>
+            <p class="text-center mb-1" style="color: var(--text-secondary); font-size: 0.85rem;">
+                <strong>¿Cómo funciona?</strong>
+            </p>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6;">
+                Abre <strong>GitHub Desktop</strong> y después carga la información que hay.
+                Esto te permitirá ocupar la última información disponible en la nube.
+            </p>
+            <div class="d-grid mt-auto">
+                <a href="cargar" class="btn btn-primary">
+                    <i class="bi bi-download me-1"></i> Cargar
+                </a>
             </div>
         </div>
     </div>
 
-    {% if mensaje %}
-    <p>{{mensaje}}</p>
-    {% endif %}
+    <!-- Subir a GitHub -->
+    <div class="col-md-6">
+        <div class="glass-card h-100">
+            <div class="text-center mb-3">
+                <i class="bi bi-cloud-upload" style="font-size: 2.5rem; color: var(--blue-accent);"></i>
+            </div>
+            <h5 class="text-center mb-2" style="font-weight: 700;">Subir a GitHub</h5>
+            <p class="text-center mb-1" style="color: var(--text-secondary); font-size: 0.85rem;">
+                <strong>¿Cómo funciona?</strong>
+            </p>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6;">
+                Haz todos los cambios que necesites y después sube la información.
+                Luego, desde <strong>GitHub Desktop</strong> haz un commit en el repositorio.
+            </p>
+            <div class="d-grid mt-auto">
+                <a href="subir" class="btn btn-primary">
+                    <i class="bi bi-upload me-1"></i> Subir
+                </a>
+            </div>
+        </div>
+    </div>
+
 </div>
-
-
 
 {% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Importar Datos{% endblock %}
+{% block page_title %}Importar Datos{% endblock %}
+{% block page_subtitle %}Sube tu archivo personas.json para importar los datos existentes{% endblock %}
+
+{% block body %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        <div class="glass-card">
+
+            {% if mensaje %}
+            <div class="alert alert-glass alert-glass-success d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2" style="font-size:1.2rem;"></i>
+                {{ mensaje }}
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="alert alert-glass alert-glass-danger d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2" style="font-size:1.2rem;"></i>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="text-center mb-4">
+                <i class="bi bi-file-earmark-arrow-up"
+                    style="font-size: 3rem; color: var(--blue-accent); opacity: 0.8;"></i>
+            </div>
+
+            <div class="alert alert-glass alert-glass-warning d-flex align-items-start mb-4" role="alert">
+                <i class="bi bi-info-circle-fill me-2 mt-1" style="font-size:1rem;"></i>
+                <div style="font-size: 0.85rem;">
+                    Sube tu archivo <strong>personas.json</strong> para importar los datos al sistema.
+                    Los hermanos que ya existan serán actualizados con la nueva información.
+                </div>
+            </div>
+
+            <form method="POST" action="/importar" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label class="form-label"><i class="bi bi-file-earmark-code me-1"></i> Archivo JSON</label>
+                    <input type="file" class="form-control" name="archivo_json" accept=".json" required>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-upload me-2"></i>Importar Datos
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

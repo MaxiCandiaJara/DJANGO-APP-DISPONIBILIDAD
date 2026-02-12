@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}Disponibilidad{% endblock %}
+{% block page_title %}Hoja de Disponibilidad{% endblock %}
+{% block page_subtitle %}Filtra por día y turno para ver quién está disponible{% endblock %}
+
+{% block body %}
+
+<!-- Filtros -->
+<div class="glass-card mb-4">
+    <form method="GET" action="/disponibilidad" id="filtroForm">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4 col-sm-6">
+                <label class="form-label"><i class="bi bi-calendar3 me-1"></i> Filtrar por día</label>
+                <select class="form-select" name="dia" onchange="document.getElementById('filtroForm').submit();">
+                    <option value="">Todos los días</option>
+                    {% if filtro_dia == "lunes" %}<option value="lunes" selected>Lunes</option>{% else %}<option
+                        value="lunes">Lunes</option>{% endif %}
+                    {% if filtro_dia == "martes" %}<option value="martes" selected>Martes</option>{% else %}<option
+                        value="martes">Martes</option>{% endif %}
+                    {% if filtro_dia == "miercoles" %}<option value="miercoles" selected>Miércoles</option>{% else %}
+                    <option value="miercoles">Miércoles</option>{% endif %}
+                    {% if filtro_dia == "jueves" %}<option value="jueves" selected>Jueves</option>{% else %}<option
+                        value="jueves">Jueves</option>{% endif %}
+                    {% if filtro_dia == "viernes" %}<option value="viernes" selected>Viernes</option>{% else %}<option
+                        value="viernes">Viernes</option>{% endif %}
+                    {% if filtro_dia == "sabado" %}<option value="sabado" selected>Sábado</option>{% else %}<option
+                        value="sabado">Sábado</option>{% endif %}
+                    {% if filtro_dia == "domingo" %}<option value="domingo" selected>Domingo</option>{% else %}<option
+                        value="domingo">Domingo</option>{% endif %}
+                </select>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <label class="form-label"><i class="bi bi-clock me-1"></i> Filtrar por turno</label>
+                <select class="form-select" name="turno" onchange="document.getElementById('filtroForm').submit();">
+                    <option value="">Todos los turnos</option>
+                    {% if filtro_turno == "manana" %}<option value="manana" selected>☀️ Mañana</option>{% else %}<option
+                        value="manana">☀️ Mañana</option>{% endif %}
+                    {% if filtro_turno == "tarde" %}<option value="tarde" selected>🌙 Tarde</option>{% else %}<option
+                        value="tarde">🌙 Tarde</option>{% endif %}
+                </select>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <a href="/disponibilidad" class="btn btn-outline-primary w-100">
+                    <i class="bi bi-x-circle me-1"></i> Limpiar filtros
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Contador -->
+<div class="d-flex justify-content-between align-items-center mb-3 px-1">
+    <span style="color: var(--text-secondary); font-size: 0.85rem;">
+        <i class="bi bi-people me-1"></i>
+        {{ hermanos|length }} hermano{{ hermanos|length|pluralize:"s" }} encontrado{{ hermanos|length|pluralize:"s" }}
+    </span>
+    {% if filtro_dia or filtro_turno %}
+    <span class="badge-day">
+        {% if filtro_dia %}{{ filtro_dia }}{% endif %}
+        {% if filtro_dia and filtro_turno %} · {% endif %}
+        {% if filtro_turno == "manana" %}☀️ Mañana{% elif filtro_turno == "tarde" %}🌙 Tarde{% endif %}
+    </span>
+    {% endif %}
+</div>
+
+<!-- Tabla tipo hoja de cálculo -->
+<div class="glass-card" style="padding: 0.5rem;">
+
+    {% if hermanos %}
+    <div class="table-responsive">
+        <table class="table-custom" id="tablaDisponibilidad">
+            <thead>
+                <tr>
+                    <th style="min-width: 150px;"><i class="bi bi-person me-1"></i> Nombre</th>
+                    {% for dia in dias %}
+                    <th class="text-center" style="min-width: 90px;">
+                        <div style="font-size: 0.75rem; opacity: 0.7;">{{ dia|title }}</div>
+                        <div style="display: flex; gap: 4px; justify-content: center; margin-top: 2px;">
+                            <span
+                                style="font-size: 0.65rem; background: rgba(250,204,21,0.2); padding: 1px 5px; border-radius: 4px;">☀️</span>
+                            <span
+                                style="font-size: 0.65rem; background: rgba(99,102,241,0.2); padding: 1px 5px; border-radius: 4px;">🌙</span>
+                        </div>
+                    </th>
+                    {% endfor %}
+                    <th style="min-width: 120px;"><i class="bi bi-chat-left-text me-1"></i> Nota</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hermano in hermanos %}
+                <tr>
+                    <td style="font-weight: 600; white-space: nowrap;">{{ hermano.nombre }}</td>
+
+                    <!-- Lunes -->
+                    <td class="text-center">
+                        {% if hermano.manana_lunes %}<span class="cell-check cell-manana">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                        {% if hermano.tarde_lunes %}<span class="cell-check cell-tarde">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                    </td>
+
+                    <!-- Martes -->
+                    <td class="text-center">
+                        {% if hermano.manana_martes %}<span class="cell-check cell-manana">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                        {% if hermano.tarde_martes %}<span class="cell-check cell-tarde">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                    </td>
+
+                    <!-- Miércoles -->
+                    <td class="text-center">
+                        {% if hermano.manana_miercoles %}<span class="cell-check cell-manana">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                        {% if hermano.tarde_miercoles %}<span class="cell-check cell-tarde">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                    </td>
+
+                    <!-- Jueves -->
+                    <td class="text-center">
+                        {% if hermano.manana_jueves %}<span class="cell-check cell-manana">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                        {% if hermano.tarde_jueves %}<span class="cell-check cell-tarde">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                    </td>
+
+                    <!-- Viernes -->
+                    <td class="text-center">
+                        {% if hermano.manana_viernes %}<span class="cell-check cell-manana">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                        {% if hermano.tarde_viernes %}<span class="cell-check cell-tarde">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                    </td>
+
+                    <!-- Sábado -->
+                    <td class="text-center">
+                        {% if hermano.manana_sabado %}<span class="cell-check cell-manana">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                        {% if hermano.tarde_sabado %}<span class="cell-check cell-tarde">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                    </td>
+
+                    <!-- Domingo -->
+                    <td class="text-center">
+                        {% if hermano.manana_domingo %}<span class="cell-check cell-manana">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                        {% if hermano.tarde_domingo %}<span class="cell-check cell-tarde">✓</span>{% else %}<span
+                            class="cell-empty">—</span>{% endif %}
+                    </td>
+
+                    <td style="font-size: 0.85rem; color: var(--text-secondary);">{{ hermano.comentario }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-table" style="font-size: 3rem; color: var(--text-secondary); opacity: 0.5;"></i>
+        <p class="mt-3" style="color: var(--text-secondary);">
+            {% if filtro_dia or filtro_turno %}
+            No se encontraron hermanos con esos filtros.
+            {% else %}
+            No hay hermanos registrados aún.
+            {% endif %}
+        </p>
+        {% if filtro_dia or filtro_turno %}
+        <a href="/disponibilidad" class="btn btn-outline-primary mt-2">
+            <i class="bi bi-x-circle me-1"></i> Limpiar filtros
+        </a>
+        {% else %}
+        <a href="/agregarHermano" class="btn btn-primary mt-2">
+            <i class="bi bi-person-plus me-1"></i> Agregar Hermano
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+
+<style>
+    .cell-check {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin: 1px;
+    }
+
+    .cell-manana {
+        background: rgba(250, 204, 21, 0.15);
+        color: #fbbf24;
+        border: 1px solid rgba(250, 204, 21, 0.3);
+    }
+
+    .cell-tarde {
+        background: rgba(99, 102, 241, 0.15);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .cell-empty {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+        color: rgba(148, 163, 184, 0.3);
+        margin: 1px;
+    }
+</style>
+
+{% endblock %}

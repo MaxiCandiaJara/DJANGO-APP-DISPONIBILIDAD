@@ -1,146 +1,127 @@
 {% extends "base.html" %}
 
+{% block title %}Agregar Hermano{% endblock %}
+{% block page_title %}Agregar Hermano{% endblock %}
+{% block page_subtitle %}Registra un nuevo hermano con su disponibilidad semanal{% endblock %}
 
 {% block body %}
 
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="glass-card">
 
-<div class="container">
+            {% if mensaje %}
+            <div class="alert alert-glass alert-glass-success d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2" style="font-size:1.2rem;"></i>
+                {{ mensaje }}
+            </div>
+            {% endif %}
 
+            {% if mensaje_error %}
+            <div class="alert alert-glass alert-glass-danger d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2" style="font-size:1.2rem;"></i>
+                {{ mensaje_error }}
+            </div>
+            {% endif %}
 
-    <form action="agregar" class="row g-3" method="post"> {% csrf_token %}
+            <form action="agregar" method="post">
+                {% csrf_token %}
 
-        <div class="col-md-4">
-            <label for="validationCustom01" class="form-label">Nombre y Apellido</label>
-            <input type="text" class="form-control" name="nombre" value="" required>
+                <!-- Nombre -->
+                <div class="mb-4">
+                    <label class="form-label"><i class="bi bi-person me-1"></i> Nombre y Apellido</label>
+                    <input type="text" class="form-control" name="nombre" placeholder="Ej: Juan Pérez" required>
+                </div>
+
+                <!-- Mañanas -->
+                <div class="mb-4">
+                    <div class="section-label">
+                        <span class="icon">☀️</span> Disponibilidad Mañanas
+                    </div>
+                    <div class="day-toggle-group">
+                        <input type="checkbox" class="btn-check" name="dias" value="lunes" id="m-lun"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="m-lun">Lunes</label>
+
+                        <input type="checkbox" class="btn-check" name="dias" value="martes" id="m-mar"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="m-mar">Martes</label>
+
+                        <input type="checkbox" class="btn-check" name="dias" value="miercoles" id="m-mie"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="m-mie">Miércoles</label>
+
+                        <input type="checkbox" class="btn-check" name="dias" value="jueves" id="m-jue"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="m-jue">Jueves</label>
+
+                        <input type="checkbox" class="btn-check" name="dias" value="viernes" id="m-vie"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="m-vie">Viernes</label>
+
+                        <input type="checkbox" class="btn-check" name="dias" value="sabado" id="m-sab"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="m-sab">Sábado</label>
+
+                        <input type="checkbox" class="btn-check" name="dias" value="domingo" id="m-dom"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="m-dom">Domingo</label>
+                    </div>
+                </div>
+
+                <!-- Tardes -->
+                <div class="mb-4">
+                    <div class="section-label">
+                        <span class="icon">🌙</span> Disponibilidad Tardes
+                    </div>
+                    <div class="day-toggle-group">
+                        <input type="checkbox" class="btn-check" name="tardes" value="lunes" id="t-lun"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="t-lun">Lunes</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="martes" id="t-mar"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="t-mar">Martes</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="miercoles" id="t-mie"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="t-mie">Miércoles</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="jueves" id="t-jue"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="t-jue">Jueves</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="viernes" id="t-vie"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="t-vie">Viernes</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="sabado" id="t-sab"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="t-sab">Sábado</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="domingo" id="t-dom"
+                            autocomplete="off">
+                        <label class="btn btn-day" for="t-dom">Domingo</label>
+                    </div>
+                </div>
+
+                <!-- Comentarios -->
+                <div class="mb-4">
+                    <label class="form-label"><i class="bi bi-chat-left-text me-1"></i> Comentarios</label>
+                    <input type="text" class="form-control" name="comentario" placeholder="Observaciones adicionales..."
+                        value="" required>
+                </div>
+
+                <!-- Submit -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Guardar Hermano
+                    </button>
+                </div>
+            </form>
+
         </div>
-
-
-
-        <label for="dias">Dias</label>
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="dias" value="lunes" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault" >
-                Lunes
-            </label>
-        </div>
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="dias" value="martes" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                Martes
-            </label>
-        </div>
-
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="dias" value="miercoles" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                Miercoles
-            </label>
-        </div>
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="dias" value="jueves" id="flexCheckChecked">
-            <label class="form-check-label" for="flexCheckChecked">
-                Jueves
-            </label>
-        </div>
-
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="dias" value="viernes" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                Viernes
-            </label>
-        </div>
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="dias" value="sabado" id="flexCheckChecked">
-            <label class="form-check-label" for="flexCheckChecked">
-                Sabado
-            </label>
-        </div>
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="dias" value="domingo" id="flexCheckChecked">
-            <label class="form-check-label" for="flexCheckChecked">
-                Domingo
-            </label>
-        </div>
-
-        <div class="col-md-12"></div>
-
-
-        <label for="tardes">Tardes</label>
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="tardes" value="lunes" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                Lunes
-            </label>
-        </div>
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="tardes" value="martes" id="flexCheckChecked">
-            <label class="form-check-label" for="flexCheckChecked">
-                Martes
-            </label>
-        </div>
-
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="tardes" value="miercoles" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                Miercoles
-            </label>
-        </div>
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="tardes" value="jueves" id="flexCheckChecked">
-            <label class="form-check-label" for="flexCheckChecked">
-                Jueves
-            </label>
-        </div>
-
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="tardes" value="viernes" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                Viernes
-            </label>
-        </div>
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="tardes" value="sabado" id="flexCheckChecked">
-            <label class="form-check-label" for="flexCheckChecked">
-                Sabado
-            </label>
-        </div>
-
-        <div class="form-check col-md-1">
-            <input class="form-check-input" type="checkbox" name="tardes" value="domingo" id="flexCheckChecked">
-            <label class="form-check-label" for="flexCheckChecked">
-                Domingo
-            </label>
-        </div>
-        <div class="col-md-12"></div>
-        <div class="col-md-6">
-            <label for="validationCustom01" class="form-label">Comentarios</label>
-            <input type="text" class="form-control" id="validationCustom01" name="comentario"  value="" required>
-        </div>
-        <div class="col-md-12"></div>
-        <button type="submit" class="btn btn-primary col-md-6">Guardar Hermano</button>
-
-
-
-    </form>
-
-    {% if mensaje %}
-    <p>{{mensaje}}</p>
-    {% endif %}
+    </div>
 </div>
-
-</div>
-
-
 
 {% endblock %}

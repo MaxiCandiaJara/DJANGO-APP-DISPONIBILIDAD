@@ -1,115 +1,672 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="dark">
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Predicacion Vicuña Mackenna</title>
+    <title>{% block title %}Disponibilidad{% endblock %} — Predicación</title>
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/calendar-check.svg"
+        type="image/svg+xml">
 
-    <style> 
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        body{
-
-            background-color: rgb(6, 0, 14);
-            color: aliceblue !important;
-
-
-
-
+    <style>
+        :root {
+            --bg-primary: #0a1628;
+            --bg-secondary: #0f2035;
+            --bg-card: rgba(15, 32, 53, 0.7);
+            --blue-primary: #2563eb;
+            --blue-hover: #3b82f6;
+            --blue-accent: #60a5fa;
+            --blue-light: #93c5fd;
+            --blue-dark: #1e40af;
+            --navbar-bg: #0c1a2e;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(37, 99, 235, 0.2);
+            --glass-bg: rgba(15, 32, 53, 0.6);
+            --glass-border: rgba(96, 165, 250, 0.15);
         }
 
-        .titulo{
+        * {
+            font-family: 'Inter', sans-serif;
+        }
 
+        body {
+            background: var(--bg-primary);
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(96, 165, 250, 0.06) 0%, transparent 50%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar-custom {
+            background: var(--navbar-bg) !important;
+            border-bottom: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 0.8rem 0;
+        }
+
+        .navbar-custom .navbar-brand {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--blue-accent) !important;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-custom .navbar-brand .brand-icon {
+            background: linear-gradient(135deg, var(--blue-primary), var(--blue-accent));
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .navbar-custom .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .navbar-custom .nav-link:hover,
+        .navbar-custom .nav-link.active {
+            color: #fff !important;
+            background: rgba(37, 99, 235, 0.15);
+        }
+
+        .navbar-custom .nav-link i {
+            font-size: 1.05rem;
+        }
+
+        .navbar-toggler {
+            border: 1px solid var(--glass-border) !important;
+            padding: 0.4rem 0.6rem;
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(1);
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171 !important;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            font-weight: 500;
+            font-size: 0.85rem;
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.25);
+            color: #fca5a5 !important;
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
             text-align: center;
+            padding: 2.5rem 0 1.5rem;
         }
 
-        .nava{
+        .page-header h2 {
+            font-weight: 700;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, var(--blue-accent), var(--blue-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.3rem;
+        }
 
-            border: 2px, solid, white;
+        .page-header .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* ===== GLASS CARD ===== */
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 2rem;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(96, 165, 250, 0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(37, 99, 235, 0.12);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes iconPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .page-header {
+            animation: fadeIn 0.6s ease;
+        }
+
+        .glass-card .dashboard-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .glass-card:hover .dashboard-icon {
+            animation: iconPulse 0.6s ease;
+        }
+
+        .alert {
+            animation: slideDown 0.4s ease;
+        }
+
+        .btn {
+            transition: all 0.25s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-control,
+        .form-select {
+            background: rgba(10, 22, 40, 0.6) !important;
+            border: 1px solid var(--border-color) !important;
+            color: var(--text-primary) !important;
+            border-radius: 10px;
+            padding: 0.65rem 1rem;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--blue-primary) !important;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary) !important;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+        }
+
+        /* ===== TOGGLE BUTTONS (days) ===== */
+        .day-toggle-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .btn-check+.btn-day {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-check:checked+.btn-day {
+            background: linear-gradient(135deg, var(--blue-primary), var(--blue-hover));
+            border-color: var(--blue-primary);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-check+.btn-day:hover {
+            border-color: var(--blue-accent);
+            color: var(--blue-accent);
+        }
+
+        .btn-check:checked+.btn-day:hover {
+            color: #fff;
+        }
+
+        /* ===== SECTION LABELS ===== */
+        .section-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-label .icon {
+            font-size: 1.1rem;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--blue-primary), var(--blue-hover)) !important;
+            border: none !important;
+            font-weight: 600;
+            padding: 0.65rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+        }
+
+        .btn-outline-primary {
+            border: 1px solid var(--blue-primary) !important;
+            color: var(--blue-accent) !important;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--blue-primary) !important;
+            color: #fff !important;
+        }
+
+        /* ===== TABLES ===== */
+        .table-custom {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+
+        .table-custom thead th {
+            background: linear-gradient(135deg, var(--blue-dark), var(--blue-primary));
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.85rem 1rem;
+            border: none;
+        }
+
+        .table-custom thead th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        .table-custom thead th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        .table-custom tbody td {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+
+        .table-custom tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table-custom tbody tr:hover td {
+            background: rgba(37, 99, 235, 0.08);
+        }
+
+        .table-custom tbody tr:last-child td:first-child {
+            border-radius: 0 0 0 12px;
+        }
+
+        .table-custom tbody tr:last-child td:last-child {
+            border-radius: 0 0 12px 0;
+        }
+
+        /* ===== BADGES ===== */
+        .badge-day {
+            background: rgba(37, 99, 235, 0.15);
+            color: var(--blue-accent);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            display: inline-block;
+            margin: 0.15rem;
+        }
+
+        /* ===== ALERTS ===== */
+        .alert-glass {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
             border-radius: 12px;
-            color: aliceblue !important;
-
-
+            backdrop-filter: blur(12px);
         }
 
-        a{
-
-            color: aliceblue !important;
-
+        .alert-glass-success {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.2);
+            color: #86efac;
         }
 
-        .body{
-
-           
-            border: 2px, solid, white;
-            border-radius: 12px;
-            padding: 10px;
-            color: black;
-            background-color: aliceblue;
-
+        .alert-glass-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
         }
 
+        .alert-glass-warning {
+            background: rgba(234, 179, 8, 0.1);
+            border-color: rgba(234, 179, 8, 0.2);
+            color: #fde68a;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: auto;
+            padding: 1.5rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        /* ===== CONTENT WRAPPER ===== */
+        .content-wrapper {
+            flex: 1;
+            padding-bottom: 2rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 1.5rem 0 1rem;
+            }
+
+            .page-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .glass-card {
+                padding: 1.25rem;
+                border-radius: 12px;
+            }
+
+            .day-toggle-group {
+                gap: 0.35rem;
+            }
+
+            .btn-check+.btn-day {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .table-custom thead th,
+            .table-custom tbody td {
+                padding: 0.6rem 0.5rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--blue-primary);
+            border-radius: 3px;
+        }
     </style>
-
-
-
 </head>
 
 <body>
 
-    <div class="nava">
-        <nav class="navbar navbar-expand-lg navbar-black bg-black">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#"></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="agregarHermano">Agregar hermano</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="buscar">Editar hermano</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="elegirMes">Mensajes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="github">GitHub</a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link " href="listarHermanos">Listar</a>
-                        </li>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <span class="brand-icon"><i class="bi bi-calendar-check"></i></span>
+                Predicación
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
+                aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="bi bi-house"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/agregarHermano"><i class="bi bi-person-plus"></i> Agregar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/buscar"><i class="bi bi-pencil-square"></i> Editar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/listarHermanos"><i class="bi bi-people"></i> Listar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/elegirMes"><i class="bi bi-chat-dots"></i> Mensajes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/disponibilidad"><i class="bi bi-table"></i> Disponibilidad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/importar"><i class="bi bi-file-earmark-arrow-up"></i> Importar</a>
+                    </li>
+                </ul>
+                {% if user.is_authenticated %}
+                <a href="/logout/" class="btn btn-logout">
+                    <i class="bi bi-box-arrow-right"></i> Salir
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
 
-                    </ul>
+    <!-- Content -->
+    <div class="content-wrapper">
+        <div class="page-header">
+            <div class="container">
+                <h2>{% block page_title %}Administrador de Disponibilidad{% endblock %}</h2>
+                <p class="subtitle">{% block page_subtitle %}Gestión de hermanos para la predicación{% endblock %}</p>
+            </div>
+        </div>
+
+        <div class="container">
+            {% block body %}
+            <!-- Welcome content for index -->
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-4">
+                    <a href="/agregarHermano" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up"
+                            style="cursor:pointer; animation-delay: 0.05s;">
+                            <i class="bi bi-person-plus dashboard-icon"
+                                style="font-size: 2.5rem; color: var(--blue-accent);"></i>
+                            <h5 class="mt-3 mb-2" style="color: var(--text-primary);">Agregar Hermano</h5>
+                            <p class="mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">Registrar nuevo
+                                hermano con su disponibilidad</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/buscar" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up"
+                            style="cursor:pointer; animation-delay: 0.12s;">
+                            <i class="bi bi-pencil-square dashboard-icon"
+                                style="font-size: 2.5rem; color: var(--blue-accent);"></i>
+                            <h5 class="mt-3 mb-2" style="color: var(--text-primary);">Editar Hermano</h5>
+                            <p class="mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">Modificar la
+                                disponibilidad de un hermano</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/listarHermanos" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up"
+                            style="cursor:pointer; animation-delay: 0.19s;">
+                            <i class="bi bi-people dashboard-icon"
+                                style="font-size: 2.5rem; color: var(--blue-accent);"></i>
+                            <h5 class="mt-3 mb-2" style="color: var(--text-primary);">Listar Hermanos</h5>
+                            <p class="mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">Ver todos los
+                                hermanos y su disponibilidad</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/elegirMes" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up"
+                            style="cursor:pointer; animation-delay: 0.26s;">
+                            <i class="bi bi-chat-dots dashboard-icon"
+                                style="font-size: 2.5rem; color: var(--blue-accent);"></i>
+                            <h5 class="mt-3 mb-2" style="color: var(--text-primary);">Mensajes</h5>
+                            <p class="mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">Generar mensajes
+                                de confirmación por mes</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/disponibilidad" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up"
+                            style="cursor:pointer; animation-delay: 0.33s;">
+                            <i class="bi bi-table dashboard-icon"
+                                style="font-size: 2.5rem; color: var(--blue-accent);"></i>
+                            <h5 class="mt-3 mb-2" style="color: var(--text-primary);">Disponibilidad</h5>
+                            <p class="mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">Hoja de cálculo
+                                con filtros por día y turno</p>
+                        </div>
+                    </a>
                 </div>
             </div>
-        </nav>
-    </div>
-    <br><br><br>
-    <div class="titulo">
-
-        <h2>Administrador de disponibilidad de los hermanos</h2>
-
-
+            {% endblock %}
+        </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <span>Predicación Vicuña Mackenna &copy; 2026</span>
+        </div>
+    </footer>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Page transition animation (solo primera visita de la sesión) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (sessionStorage.getItem('animPlayed')) return;
+            sessionStorage.setItem('animPlayed', 'true');
 
+            const cards = document.querySelectorAll('.glass-card:not(.animate-fade-in-up)');
+            cards.forEach(function (card, i) {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(16px)';
+                setTimeout(function () {
+                    card.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 60 + (i * 80));
+            });
 
-    <div class="container body">
-        {% block body %}
-
-
-        {% endblock %}
-    </div>
-
+            const rows = document.querySelectorAll('.table-custom tbody tr');
+            rows.forEach(function (row, i) {
+                row.style.opacity = '0';
+                row.style.transform = 'translateX(-12px)';
+                setTimeout(function () {
+                    row.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                    row.style.opacity = '1';
+                    row.style.transform = 'translateX(0)';
+                }, 80 + (i * 40));
+            });
+        });
+    </script>
 </body>
 
 </html>

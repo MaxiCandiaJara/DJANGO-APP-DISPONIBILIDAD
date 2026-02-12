@@ -1,166 +1,182 @@
 {% extends "base.html" %}
 
+{% block title %}Editar Hermano{% endblock %}
+{% block page_title %}Editar Hermano{% endblock %}
+{% block page_subtitle %}Modifica la disponibilidad y datos del hermano{% endblock %}
+
 {% block body %}
-{% if error %}
 
+<div class="row justify-content-center">
+    <div class="col-lg-8">
 
+        {% if error %}
+        <div class="glass-card text-center">
+            <div class="alert alert-glass alert-glass-danger d-flex align-items-center justify-content-center mb-3"
+                role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2" style="font-size:1.2rem;"></i>
+                {{ error }}
+            </div>
+            <a href="/buscar" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left me-1"></i> Volver a buscar
+            </a>
+        </div>
+        {% endif %}
 
-    <p>{{error}}</p>
+        {% if not error %}
+        <div class="glass-card">
 
+            <form action="editarHermano" method="post">
+                {% csrf_token %}
 
+                <!-- Nombre -->
+                <div class="mb-4">
+                    <label class="form-label"><i class="bi bi-person me-1"></i> Nombre y Apellido</label>
+                    <input type="text" class="form-control" value="{{ Hermano.nombre }}" name="nombre" required>
+                </div>
 
-{% endif %}
+                <!-- Mañanas -->
+                <div class="mb-4">
+                    <div class="section-label">
+                        <span class="icon">☀️</span> Disponibilidad Mañanas
+                    </div>
+                    <div class="day-toggle-group">
+                        <input type="checkbox" class="btn-check" name="dias" value="lunes" id="m-lun" autocomplete="off"
+                            {% if "lunes" in dias_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="m-lun">Lunes</label>
 
+                        <input type="checkbox" class="btn-check" name="dias" value="martes" id="m-mar"
+                            autocomplete="off" {% if "martes" in dias_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="m-mar">Martes</label>
 
-{% if not error %}
+                        <input type="checkbox" class="btn-check" name="dias" value="miercoles" id="m-mie"
+                            autocomplete="off" {% if "miercoles" in dias_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="m-mie">Miércoles</label>
 
+                        <input type="checkbox" class="btn-check" name="dias" value="jueves" id="m-jue"
+                            autocomplete="off" {% if "jueves" in dias_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="m-jue">Jueves</label>
 
-    
+                        <input type="checkbox" class="btn-check" name="dias" value="viernes" id="m-vie"
+                            autocomplete="off" {% if "viernes" in dias_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="m-vie">Viernes</label>
 
-<form action="editarHermano" class="row g-3" method="post"> {% csrf_token %}
+                        <input type="checkbox" class="btn-check" name="dias" value="sabado" id="m-sab"
+                            autocomplete="off" {% if "sabado" in dias_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="m-sab">Sábado</label>
 
-    <div class="col-md-4">
-        <label for="validationCustom01" class="form-label">Nombre y Apellido</label>
-        <input type="text" class="form-control" id="validationCustom01" value="{{Hermano.Nombre}}" name="nombre" required>
+                        <input type="checkbox" class="btn-check" name="dias" value="domingo" id="m-dom"
+                            autocomplete="off" {% if "domingo" in dias_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="m-dom">Domingo</label>
+                    </div>
+                </div>
+
+                <!-- Tardes -->
+                <div class="mb-4">
+                    <div class="section-label">
+                        <span class="icon">🌙</span> Disponibilidad Tardes
+                    </div>
+                    <div class="day-toggle-group">
+                        <input type="checkbox" class="btn-check" name="tardes" value="lunes" id="t-lun"
+                            autocomplete="off" {% if "lunes" in tardes_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="t-lun">Lunes</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="martes" id="t-mar"
+                            autocomplete="off" {% if "martes" in tardes_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="t-mar">Martes</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="miercoles" id="t-mie"
+                            autocomplete="off" {% if "miercoles" in tardes_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="t-mie">Miércoles</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="jueves" id="t-jue"
+                            autocomplete="off" {% if "jueves" in tardes_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="t-jue">Jueves</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="viernes" id="t-vie"
+                            autocomplete="off" {% if "viernes" in tardes_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="t-vie">Viernes</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="sabado" id="t-sab"
+                            autocomplete="off" {% if "sabado" in tardes_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="t-sab">Sábado</label>
+
+                        <input type="checkbox" class="btn-check" name="tardes" value="domingo" id="t-dom"
+                            autocomplete="off" {% if "domingo" in tardes_guardados %}checked{% endif %}>
+                        <label class="btn btn-day" for="t-dom">Domingo</label>
+                    </div>
+                </div>
+
+                <!-- Comentarios -->
+                <div class="mb-4">
+                    <label class="form-label"><i class="bi bi-chat-left-text me-1"></i> Comentarios</label>
+                    <input type="text" class="form-control" value="{{ Hermano.comentario }}" name="comentario">
+                </div>
+
+                <!-- Buttons -->
+                <div class="row g-3">
+                    <div class="col-sm-4">
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-1"></i> Guardar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="d-grid">
+                            <a href="/buscar" class="btn btn-outline-primary">
+                                <i class="bi bi-arrow-left me-1"></i> Volver
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="d-grid">
+                            <button type="button" class="btn"
+                                style="background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; font-weight: 500;"
+                                data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <i class="bi bi-trash me-1"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                    style="background: var(--bg-secondary); border: 1px solid var(--glass-border); border-radius: 16px;">
+                    <div class="modal-header" style="border-bottom: 1px solid var(--glass-border);">
+                        <h5 class="modal-title" style="color: #f87171;">
+                            <i class="bi bi-exclamation-triangle me-2"></i>Confirmar eliminación
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de que deseas eliminar a <strong>{{ Hermano.nombre }}</strong>?</p>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem;">Esta acción no se puede deshacer.
+                        </p>
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid var(--glass-border);">
+                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
+                        <form action="/eliminarHermano" method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="hermano_id" value="{{ Hermano.id }}">
+                            <button type="submit" class="btn"
+                                style="background: #ef4444; color: #fff; border: none; border-radius: 10px;">
+                                <i class="bi bi-trash me-1"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+
     </div>
-
-
-
-    <label for="dias">Dias</label>
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="lunes" id="flexCheckDefault" name="dias"
-        {% if "lunes" in dias_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckDefault">
-            Lunes
-        </label>
-    </div>
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="martes" id="flexCheckDefault" name="dias"
-        {% if "martes" in dias_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckDefault">
-            Martes
-        </label>
-    </div>
-
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="miercoles" id="flexCheckDefault" name="dias"
-        {% if "miercoles" in dias_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckDefault">
-            Miercoles
-        </label>
-    </div>
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="jueves" id="flexCheckChecked" name="dias"
-        {% if "jueves" in dias_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckChecked">
-            Jueves
-        </label>
-    </div>
-
-
-    <div class="form-check col-md-1"> 
-        <input class="form-check-input" type="checkbox" value="viernes" id="flexCheckDefault" name="dias"
-        {% if "viernes" in dias_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckDefault">
-            Viernes
-        </label>
-    </div>
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="sabado" id="flexCheckChecked" name="dias"
-        {% if "sabado" in dias_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckChecked">
-            Sabado
-        </label>
-    </div>
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="domingo" id="flexCheckChecked" name="dias"
-        {% if "domingo" in dias_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckChecked">
-            Domingo
-        </label>
-    </div>
-
-    <div class="col-md-12"></div>
-
-
-    <label for="tardes">Tardes</label>
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="lunes" id="flexCheckDefault" name="tardes"
-        {% if "lunes" in tardes_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckDefault">
-            Lunes
-        </label>
-    </div>
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="martes" id="flexCheckChecked" name="tardes"
-        {% if "martes" in tardes_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckChecked">
-            Martes
-        </label>
-    </div>
-
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="miercoles" id="flexCheckDefault" name="tardes"
-        {% if "miercoles" in tardes_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckDefault">
-            Miercoles
-        </label>
-    </div>
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="jueves" id="flexCheckChecked" name="tardes"
-        {% if "jueves" in tardes_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckChecked">
-            Jueves
-        </label>
-    </div>
-
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="viernes" id="flexCheckDefault" name="tardes"
-        {% if "viernes" in tardes_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckDefault">
-            Viernes
-        </label>
-    </div>
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="sabado" id="flexCheckChecked" name="tardes"
-        {% if "sabado" in tardes_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckChecked">
-            Sabado
-        </label>
-    </div>
-
-    <div class="form-check col-md-1">
-        <input class="form-check-input" type="checkbox" value="domingo" id="flexCheckChecked" name="tardes"
-        {% if "domingo" in tardes_guardados %}checked{% endif %}>
-        <label class="form-check-label" for="flexCheckChecked">
-            Domingo
-        </label>
-    </div>
-    <div class="col-md-12"></div>
-    <div class="col-md-6">
-        <label for="validationCustom01" class="form-label">Comentarios</label>
-        <input type="text" class="form-control" id="validationCustom01" value="{{Hermano.Comentario}}" name="comentario">
-    </div>
-    <div class="col-md-6"></div>
-    <button type="submit" class="btn btn-primary col-md-4">Guardar Hermano</button>
-    <div class="col-md-2"></div>
-    <a href="buscar" class="btn btn-primary col-md-4">Volver</a>
-
-
-</form>
-
-
-
-{% endif %}
+</div>
 
 {% endblock %}
