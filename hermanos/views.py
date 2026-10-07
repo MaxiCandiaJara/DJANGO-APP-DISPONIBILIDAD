@@ -97,36 +97,41 @@ def elegirMes(request):
     return render(request, "elegirMes.html")
 
 
-def cargarMensajes(mes):
+def cargarMensajes(mes, incluir_manana=True, incluir_tarde=True):
     hermanos = Hermano.objects.all()
     mensaje = []
 
     todos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]
 
     for h in hermanos:
-        manana_list = h.manana_list
-        tarde_list = h.tarde_list
+        partes = []
 
-        # Revisamos la mañana
-        if not manana_list:
-            mananas_texto = "no podía"
-        elif manana_list == todos:
-            mananas_texto = "podía todos los dias"
-        else:
-            mananas_texto = "podía los " + ", ".join(manana_list)
+        if incluir_manana:
+            manana_list = h.manana_list
+            if not manana_list:
+                partes.append("no podía en las mañanas")
+            elif manana_list == todos:
+                partes.append("podía todos los dias en las mañanas")
+            else:
+                partes.append("podía los " + ", ".join(manana_list) + " en las mañanas")
 
-        # Revisamos la tarde
-        if not tarde_list:
-            tardes_texto = "no podía"
-        elif tarde_list == todos:
-            tardes_texto = "podía todas las tardes"
+        if incluir_tarde:
+            tarde_list = h.tarde_list
+            if not tarde_list:
+                partes.append("no podía en las tardes")
+            elif tarde_list == todos:
+                partes.append("podía todas las tardes")
+            else:
+                partes.append("podía los " + ", ".join(tarde_list) + " en las tardes")
+
+        if partes:
+            disponibilidad = ", y que ".join(partes)
         else:
-            tardes_texto = "podía los " + ", ".join(tarde_list)
+            disponibilidad = "no tenía información registrada"
 
         texto = (
             f"Hola, estamos confirmando su disponibilidad para el mes de {mes}. "
-            f"Usted nos dijo que {mananas_texto} en las mañanas, "
-            f"y que {tardes_texto} en las tardes. "
+            f"Usted nos dijo que {disponibilidad}. "
             "Confirmar si mantendrá esta disponibilidad o la cambiará. "
             "De antemano se le agradece su buena disposición. "
             "*Si no responde a este mensaje vamos a asumir que la mantiene.*"
@@ -145,7 +150,9 @@ def cargarMensajes(mes):
 def mensajes(request):
     global mesSiguiente
     mesSiguiente = request.POST["mes"]
-    mensaje = cargarMensajes(mesSiguiente)
+    incluir_manana = 'incluir_manana' in request.POST
+    incluir_tarde = 'incluir_tarde' in request.POST
+    mensaje = cargarMensajes(mesSiguiente, incluir_manana, incluir_tarde)
     return render(request, "mensajes.html", {'mensaje': mensaje})
 
 
@@ -557,41 +564,42 @@ def elegirMesCasas(request):
     return render(request, "elegirMesCasas.html")
 
 
-def cargarMensajesCasas(mes):
+def cargarMensajesCasas(mes, incluir_manana=True, incluir_tarde=True, incluir_cartas=True):
     casas = Casa.objects.all()
     mensaje = []
 
     todos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]
 
     for c in casas:
-        manana_list = c.manana_list
-        tarde_list = c.tarde_list
-
         # Construir texto de disponibilidad
         partes = []
 
-        if manana_list:
-            if manana_list == todos:
-                partes.append("todos los dias en las mañanas")
-            else:
-                partes.append("los " + ", ".join(manana_list) + " en las mañanas")
+        if incluir_manana:
+            manana_list = c.manana_list
+            if manana_list:
+                if manana_list == todos:
+                    partes.append("todos los dias en las mañanas")
+                else:
+                    partes.append("los " + ", ".join(manana_list) + " en las mañanas")
 
-        if tarde_list:
-            if tarde_list == todos:
-                partes.append("todas las tardes")
-            else:
-                partes.append("los " + ", ".join(tarde_list) + " en las tardes")
+        if incluir_tarde:
+            tarde_list = c.tarde_list
+            if tarde_list:
+                if tarde_list == todos:
+                    partes.append("todas las tardes")
+                else:
+                    partes.append("los " + ", ".join(tarde_list) + " en las tardes")
 
         if partes:
             disponibilidad = " y ".join(partes)
         else:
             disponibilidad = "no tenia disponibilidad"
 
-        cartas_list = c.cartas_tarde_list
-        if cartas_list:
-            cartas_texto = " Además, está disponible para cartas en las tardes los: " + ", ".join(cartas_list) + "."
-        else:
-            cartas_texto = ""
+        cartas_texto = ""
+        if incluir_cartas:
+            cartas_list = c.cartas_tarde_list
+            if cartas_list:
+                cartas_texto = " Además, está disponible para cartas en las tardes los: " + ", ".join(cartas_list) + "."
 
         texto = (
             f"Hola, estamos verificando la disponibilidad de su casita para el mes de {mes}, "
@@ -614,5 +622,8 @@ def cargarMensajesCasas(mes):
 def mensajesCasas(request):
     global mesCasasSiguiente
     mesCasasSiguiente = request.POST["mes"]
-    mensaje = cargarMensajesCasas(mesCasasSiguiente)
+    incluir_manana = 'incluir_manana' in request.POST
+    incluir_tarde = 'incluir_tarde' in request.POST
+    incluir_cartas = 'incluir_cartas' in request.POST
+    mensaje = cargarMensajesCasas(mesCasasSiguiente, incluir_manana, incluir_tarde, incluir_cartas)
     return render(request, "mensajesCasas.html", {'mensaje': mensaje})

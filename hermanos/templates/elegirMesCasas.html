@@ -2,7 +2,7 @@
 
 {% block title %}Elegir Mes — Casas{% endblock %}
 {% block page_title %}Generar Mensajes — Casas{% endblock %}
-{% block page_subtitle %}Selecciona el mes para generar los mensajes de confirmación de casas{% endblock %}
+{% block page_subtitle %}Selecciona el mes y qué incluir en los mensajes de confirmación{% endblock %}
 
 {% block body %}
 
@@ -34,6 +34,31 @@
                         <option value="Noviembre">Noviembre</option>
                         <option value="Diciembre">Diciembre</option>
                     </select>
+                </div>
+
+                <!-- Opciones de disponibilidad a incluir en el mensaje -->
+                <div class="mb-4 text-start">
+                    <label class="form-label"><i class="bi bi-funnel me-1"></i> Incluir en el mensaje</label>
+                    <div class="d-flex flex-column gap-2">
+                        <label class="d-flex align-items-center gap-2" style="cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+                            <input type="checkbox" name="incluir_manana" value="1" checked
+                                   style="width: 1.1rem; height: 1.1rem; accent-color: var(--blue-accent);">
+                            <i class="bi bi-sunrise" style="color: #fbbf24;"></i>
+                            <span style="font-size: 0.9rem;">Disponibilidad Mañanas</span>
+                        </label>
+                        <label class="d-flex align-items-center gap-2" style="cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+                            <input type="checkbox" name="incluir_tarde" value="1" checked
+                                   style="width: 1.1rem; height: 1.1rem; accent-color: var(--blue-accent);">
+                            <i class="bi bi-sunset" style="color: #f97316;"></i>
+                            <span style="font-size: 0.9rem;">Disponibilidad Tardes</span>
+                        </label>
+                        <label class="d-flex align-items-center gap-2" style="cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+                            <input type="checkbox" name="incluir_cartas" value="1" checked
+                                   style="width: 1.1rem; height: 1.1rem; accent-color: var(--blue-accent);">
+                            <i class="bi bi-envelope-paper" style="color: #a78bfa;"></i>
+                            <span style="font-size: 0.9rem;">Disponibilidad Cartas Tarde</span>
+                        </label>
+                    </div>
                 </div>
 
                 <div class="d-grid">
