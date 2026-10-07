@@ -1,0 +1,231 @@
+[
+    {
+        "Nombre": "carlos godoy",
+        "Manana": [
+            ""
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": false,
+        "Comentario": "No esta por febrero."
+    },
+    {
+        "Nombre": "claudio fuentes",
+        "Manana": [
+            "miercoles",
+            "viernes"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": ""
+    },
+    {
+        "Nombre": "francisco blanco",
+        "Manana": [
+            "lunes"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": "Solamente 2 lunes"
+    },
+    {
+        "Nombre": "jose aguilar",
+        "Manana": [
+            "jueves",
+            "sabado",
+            "domingo"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": "Desde el 23 en adelante"
+    },
+    {
+        "Nombre": "leonardo serey",
+        "Manana": [
+            "sabado"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": ""
+    },
+    {
+        "Nombre": "luis bustamante",
+        "Manana": [
+            "martes",
+            "viernes"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": "Solo primera semana de Febrero"
+    },
+    {
+        "Nombre": "marcelo candia",
+        "Manana": [
+            "martes",
+            "sabado",
+            "domingo"
+        ],
+        "Tarde": [
+            "lunes",
+            "martes"
+        ],
+        "Mensaje": true,
+        "Comentario": ""
+    },
+    {
+        "Nombre": "marcos villanueva",
+        "Manana": [
+            "domingo"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": "Primer sabado del mes NO"
+    },
+    {
+        "Nombre": "rodrigo valenzuela",
+        "Manana": [
+            ""
+        ],
+        "Tarde": [
+            "martes",
+            "jueves",
+            "viernes"
+        ],
+        "Mensaje": true,
+        "Comentario": ""
+    },
+    {
+        "Nombre": "hector caro",
+        "Manana": [
+            "sabado"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": "a partir del 22, fuera de Santiago"
+    },
+    {
+        "Nombre": "luis valenzuela",
+        "Manana": [
+            ""
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": ""
+    },
+    {
+        "Nombre": "victor balcazar",
+        "Manana": [
+            "sabado"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": "sábados 21 y 28 de febrero"
+    },
+    {
+        "Nombre": "pablo cayunao",
+        "Manana": [
+            ""
+        ],
+        "Tarde": [
+            "lunes",
+            "martes",
+            "miercoles",
+            "jueves",
+            "viernes"
+        ],
+        "Mensaje": true,
+        "Comentario": ""
+    },
+    {
+        "Nombre": "giovanni fuentes",
+        "Manana": [
+            ""
+        ],
+        "Tarde": [
+            "lunes",
+            "martes",
+            "jueves",
+            "viernes"
+        ],
+        "Mensaje": true,
+        "Comentario": "viernes 2 de enero"
+    },
+    {
+        "Nombre": "joaquin gonzalez",
+        "Manana": [
+            "viernes",
+            "sabado"
+        ],
+        "Tarde": [
+            "martes",
+            "viernes"
+        ],
+        "Mensaje": true,
+        "Comentario": ""
+    },
+    {
+        "Nombre": "jorge martinez",
+        "Manana": [
+            "jueves",
+            "viernes"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": "Penultima semana"
+    },
+    {
+        "Nombre": "maxi candia",
+        "Manana": [
+            ""
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": ""
+    },
+    {
+        "Nombre": "rolando cespedes",
+        "Manana": [
+            "miercoles"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": true,
+        "Comentario": "ULTIMO MIER DEL MES"
+    },
+    {
+        "Nombre": "vicente serey",
+        "Manana": [
+            "sabado",
+            "domingo"
+        ],
+        "Tarde": [
+            ""
+        ],
+        "Mensaje": false,
+        "Comentario": ""
+    }
+]

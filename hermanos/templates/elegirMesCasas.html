@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}Elegir Mes{% endblock %}
-{% block page_title %}Generar Mensajes{% endblock %}
-{% block page_subtitle %}Selecciona el mes para generar los mensajes de confirmación{% endblock %}
+{% block title %}Elegir Mes — Casas{% endblock %}
+{% block page_title %}Generar Mensajes — Casas{% endblock %}
+{% block page_subtitle %}Selecciona el mes para generar los mensajes de confirmación de casas{% endblock %}
 
 {% block body %}
 
@@ -14,7 +14,7 @@
                 <i class="bi bi-calendar-month" style="font-size: 3rem; color: var(--blue-accent); opacity: 0.8;"></i>
             </div>
 
-            <form method="POST" action="mensajes">
+            <form method="POST" action="{% url 'mensajesCasas' %}">
                 {% csrf_token %}
 
                 <div class="mb-4 text-start">

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}Agregar Hermano{% endblock %}
-{% block page_title %}Agregar Hermano{% endblock %}
-{% block page_subtitle %}Registra un nuevo hermano con su disponibilidad semanal{% endblock %}
+{% block title %}Agregar Casa{% endblock %}
+{% block page_title %}Agregar Casa{% endblock %}
+{% block page_subtitle %}Registra una nueva casa con su disponibilidad semanal{% endblock %}
 
 {% block body %}
 
@@ -24,13 +24,19 @@
             </div>
             {% endif %}
 
-            <form action="agregar" method="post">
+            <form action="{% url 'agregarCasaPost' %}" method="post">
                 {% csrf_token %}
 
                 <!-- Nombre -->
                 <div class="mb-4">
-                    <label class="form-label"><i class="bi bi-person me-1"></i> Nombre y Apellido</label>
-                    <input type="text" class="form-control" name="nombre" placeholder="Ej: Juan Pérez" required>
+                    <label class="form-label"><i class="bi bi-house-door me-1"></i> Nombre de la Casa</label>
+                    <input type="text" class="form-control" name="nombre" placeholder="Ej: Fam Jara" required>
+                </div>
+
+                <!-- Dirección -->
+                <div class="mb-4">
+                    <label class="form-label"><i class="bi bi-geo-alt me-1"></i> Dirección</label>
+                    <input type="text" class="form-control" name="direccion" placeholder="Ej: Pje. San Ramon 749">
                 </div>
 
                 <!-- Mañanas -->
@@ -105,17 +111,46 @@
                     </div>
                 </div>
 
+                <!-- Cartas en la tarde -->
+                <div class="mb-4">
+                    <div class="section-label">
+                        <span class="icon">✉️</span> Cartas en las Tardes
+                    </div>
+                    <div class="day-toggle-group">
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="lunes" id="c-lun" autocomplete="off">
+                        <label class="btn btn-day" for="c-lun">Lunes</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="martes" id="c-mar" autocomplete="off">
+                        <label class="btn btn-day" for="c-mar">Martes</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="miercoles" id="c-mie" autocomplete="off">
+                        <label class="btn btn-day" for="c-mie">Miércoles</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="jueves" id="c-jue" autocomplete="off">
+                        <label class="btn btn-day" for="c-jue">Jueves</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="viernes" id="c-vie" autocomplete="off">
+                        <label class="btn btn-day" for="c-vie">Viernes</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="sabado" id="c-sab" autocomplete="off">
+                        <label class="btn btn-day" for="c-sab">Sábado</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="domingo" id="c-dom" autocomplete="off">
+                        <label class="btn btn-day" for="c-dom">Domingo</label>
+                    </div>
+                </div>
+
                 <!-- Comentarios -->
                 <div class="mb-4">
                     <label class="form-label"><i class="bi bi-chat-left-text me-1"></i> Comentarios</label>
                     <input type="text" class="form-control" name="comentario" placeholder="Observaciones adicionales..."
-                        value="" required>
+                        value="">
                 </div>
 
                 <!-- Submit -->
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary btn-lg">
-                        <i class="bi bi-person-plus me-2"></i>Guardar Hermano
+                        <i class="bi bi-house-add me-2"></i>Guardar Casa
                     </button>
                 </div>
             </form>

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}Buscar Hermano{% endblock %}
-{% block page_title %}Editar Hermano{% endblock %}
-{% block page_subtitle %}Busca un hermano por su nombre para editar o eliminar{% endblock %}
+{% block title %}Buscar Casa{% endblock %}
+{% block page_title %}Editar Casa{% endblock %}
+{% block page_subtitle %}Busca una casa por su nombre para editar o eliminar{% endblock %}
 
 {% block body %}
 
@@ -28,11 +28,11 @@
                 <i class="bi bi-search" style="font-size: 3rem; color: var(--blue-accent); opacity: 0.8;"></i>
             </div>
 
-            <form method="POST" action="editar">
+            <form method="POST" action="{% url 'editarCasaSearch' %}">
                 {% csrf_token %}
 
                 <div class="mb-4 text-start">
-                    <label class="form-label"><i class="bi bi-person me-1"></i> Nombre del hermano</label>
+                    <label class="form-label"><i class="bi bi-house-door me-1"></i> Nombre de la casa</label>
                     <div class="input-group">
                         <span class="input-group-text"
                             style="background: rgba(10,22,40,0.6); border: 1px solid var(--border-color); color: var(--blue-accent);">
@@ -45,7 +45,7 @@
 
                 <div class="d-grid">
                     <button class="btn btn-primary" type="submit">
-                        <i class="bi bi-search me-2"></i>Buscar Hermano
+                        <i class="bi bi-search me-2"></i>Buscar Casa
                     </button>
                 </div>
             </form>

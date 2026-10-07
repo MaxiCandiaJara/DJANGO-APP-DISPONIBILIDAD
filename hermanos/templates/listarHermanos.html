@@ -1,33 +1,58 @@
 {% extends "base.html" %}
 
-
+{% block title %}Listar Hermanos{% endblock %}
+{% block page_title %}Lista de Hermanos{% endblock %}
+{% block page_subtitle %}Todos los hermanos registrados y su disponibilidad{% endblock %}
 
 {% block body %}
 
+<div class="glass-card" style="padding: 1rem;">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Disponibilidad Mañanas</th>
-            <th scope="col">Disponibilidad Tardes</th>
-            <th scope="col">Comentarios</th>
-        </tr>
-    </thead>
-    <tbody>
+    {% if hermanos %}
+    <div class="table-responsive">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th><i class="bi bi-person me-1"></i> Nombre</th>
+                    <th><i class="bi bi-sun me-1"></i> Mañanas</th>
+                    <th><i class="bi bi-moon me-1"></i> Tardes</th>
+                    <th><i class="bi bi-chat-left-text me-1"></i> Comentarios</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hermano in hermanos %}
+                <tr>
+                    <td style="font-weight: 600;">{{ hermano.nombre }}</td>
+                    <td>
+                        {% for dia in hermano.manana_list %}
+                        <span class="badge-day">{{ dia }}</span>
+                        {% empty %}
+                        <span style="color: var(--text-secondary); font-size: 0.85rem;">—</span>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for dia in hermano.tarde_list %}
+                        <span class="badge-day">{{ dia }}</span>
+                        {% empty %}
+                        <span style="color: var(--text-secondary); font-size: 0.85rem;">—</span>
+                        {% endfor %}
+                    </td>
+                    <td>{{ hermano.comentario }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-people" style="font-size: 3rem; color: var(--text-secondary); opacity: 0.5;"></i>
+        <p class="mt-3" style="color: var(--text-secondary);">No hay hermanos registrados aún.</p>
+        <a href="/agregarHermano" class="btn btn-primary mt-2">
+            <i class="bi bi-person-plus me-1"></i> Agregar Hermano
+        </a>
+    </div>
+    {% endif %}
 
-        {% for hermano in hermanos %}
-        <tr>
-            <th scope="row">{{hermano.Nombre}}</th>
-            <td>{{ hermano.Manana_list|join:", " }}</td>
-            <td>{{ hermano.Tarde_list|join:", " }}</td>
-            <td>{{hermano.Comentario}}</td>
-        </tr>
-
-
-        {% endfor %}
-    </tbody>
-</table>
-
+</div>
 
 {% endblock %}

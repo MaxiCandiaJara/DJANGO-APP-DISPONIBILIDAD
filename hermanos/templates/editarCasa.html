@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}Editar Hermano{% endblock %}
-{% block page_title %}Editar Hermano{% endblock %}
-{% block page_subtitle %}Modifica la disponibilidad y datos del hermano{% endblock %}
+{% block title %}Editar Casa{% endblock %}
+{% block page_title %}Editar Casa{% endblock %}
+{% block page_subtitle %}Modifica la disponibilidad y datos de la casa{% endblock %}
 
 {% block body %}
 
@@ -16,7 +16,7 @@
                 <i class="bi bi-exclamation-triangle-fill me-2" style="font-size:1.2rem;"></i>
                 {{ error }}
             </div>
-            <a href="/buscar" class="btn btn-outline-primary">
+            <a href="{% url 'buscarCasa' %}" class="btn btn-outline-primary">
                 <i class="bi bi-arrow-left me-1"></i> Volver a buscar
             </a>
         </div>
@@ -25,13 +25,19 @@
         {% if not error %}
         <div class="glass-card">
 
-            <form action="editarHermano" method="post">
+            <form action="{% url 'editarCasaPost' %}" method="post">
                 {% csrf_token %}
 
                 <!-- Nombre -->
                 <div class="mb-4">
-                    <label class="form-label"><i class="bi bi-person me-1"></i> Nombre y Apellido</label>
-                    <input type="text" class="form-control" value="{{ Hermano.nombre }}" name="nombre" required>
+                    <label class="form-label"><i class="bi bi-house-door me-1"></i> Nombre de la Casa</label>
+                    <input type="text" class="form-control" value="{{ Casa.nombre }}" name="nombre" required>
+                </div>
+
+                <!-- Dirección -->
+                <div class="mb-4">
+                    <label class="form-label"><i class="bi bi-geo-alt me-1"></i> Dirección</label>
+                    <input type="text" class="form-control" value="{{ Casa.direccion }}" name="direccion">
                 </div>
 
                 <!-- Mañanas -->
@@ -106,10 +112,46 @@
                     </div>
                 </div>
 
+                <!-- Cartas en la tarde -->
+                <div class="mb-4">
+                    <div class="section-label">
+                        <span class="icon">✉️</span> Cartas en las Tardes
+                    </div>
+                    <div class="day-toggle-group">
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="lunes" id="c-lun" autocomplete="off"
+                            {% if "lunes" in cartas_tarde_guardado %}checked{% endif %}>
+                        <label class="btn btn-day" for="c-lun">Lunes</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="martes" id="c-mar" autocomplete="off"
+                            {% if "martes" in cartas_tarde_guardado %}checked{% endif %}>
+                        <label class="btn btn-day" for="c-mar">Martes</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="miercoles" id="c-mie" autocomplete="off"
+                            {% if "miercoles" in cartas_tarde_guardado %}checked{% endif %}>
+                        <label class="btn btn-day" for="c-mie">Miércoles</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="jueves" id="c-jue" autocomplete="off"
+                            {% if "jueves" in cartas_tarde_guardado %}checked{% endif %}>
+                        <label class="btn btn-day" for="c-jue">Jueves</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="viernes" id="c-vie" autocomplete="off"
+                            {% if "viernes" in cartas_tarde_guardado %}checked{% endif %}>
+                        <label class="btn btn-day" for="c-vie">Viernes</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="sabado" id="c-sab" autocomplete="off"
+                            {% if "sabado" in cartas_tarde_guardado %}checked{% endif %}>
+                        <label class="btn btn-day" for="c-sab">Sábado</label>
+
+                        <input type="checkbox" class="btn-check" name="cartas_tarde" value="domingo" id="c-dom" autocomplete="off"
+                            {% if "domingo" in cartas_tarde_guardado %}checked{% endif %}>
+                        <label class="btn btn-day" for="c-dom">Domingo</label>
+                    </div>
+                </div>
+
                 <!-- Comentarios -->
                 <div class="mb-4">
                     <label class="form-label"><i class="bi bi-chat-left-text me-1"></i> Comentarios</label>
-                    <input type="text" class="form-control" value="{{ Hermano.comentario }}" name="comentario">
+                    <input type="text" class="form-control" value="{{ Casa.comentario }}" name="comentario">
                 </div>
 
                 <!-- Buttons -->
@@ -123,7 +165,7 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="d-grid">
-                            <a href="/buscar" class="btn btn-outline-primary">
+                            <a href="{% url 'buscarCasa' %}" class="btn btn-outline-primary">
                                 <i class="bi bi-arrow-left me-1"></i> Volver
                             </a>
                         </div>
@@ -155,15 +197,15 @@
                             aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body">
-                        <p>¿Estás seguro de que deseas eliminar a <strong>{{ Hermano.nombre }}</strong>?</p>
+                        <p>¿Estás seguro de que deseas eliminar la casa <strong>{{ Casa.nombre }}</strong>?</p>
                         <p style="color: var(--text-secondary); font-size: 0.85rem;">Esta acción no se puede deshacer.
                         </p>
                     </div>
                     <div class="modal-footer" style="border-top: 1px solid var(--glass-border);">
                         <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
-                        <form action="/eliminarHermano" method="POST" style="display: inline;">
+                        <form action="{% url 'eliminarCasa' %}" method="POST" style="display: inline;">
                             {% csrf_token %}
-                            <input type="hidden" name="hermano_id" value="{{ Hermano.id }}">
+                            <input type="hidden" name="casa_id" value="{{ Casa.id }}">
                             <button type="submit" class="btn"
                                 style="background: #ef4444; color: #fff; border: none; border-radius: 10px;">
                                 <i class="bi bi-trash me-1"></i> Eliminar

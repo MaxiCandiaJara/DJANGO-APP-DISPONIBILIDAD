@@ -2,114 +2,890 @@
 <html lang="es">
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Predicacion Vicuña Mackenna</title>
+    <title>{% block title %}Disponibilidad{% endblock %} — Predicación</title>
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/calendar-check.svg" type="image/svg+xml">
 
-    <style> 
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Fonts: Sora (display) + DM Sans (body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-        body{
-
-            background-color: rgb(6, 0, 14);
-            color: aliceblue !important;
-
-
-
-
+    <style>
+        /* ─────────────────────────────────────────────
+           TOKENS
+        ───────────────────────────────────────────── */
+        :root {
+            --bg:          #0d0f14;
+            --bg-2:        #13161d;
+            --bg-card:     #181c26;
+            --bg-card-2:   #1e2333;
+            --border:      rgba(255,255,255,0.07);
+            --border-hover:rgba(255,255,255,0.14);
+            --amber:       #f5a623;
+            --amber-dim:   rgba(245,166,35,0.12);
+            --amber-glow:  rgba(245,166,35,0.25);
+            --blue:        #3b82f6;
+            --blue-dim:    rgba(59,130,246,0.12);
+            --text-1:      #f0f2f7;
+            --text-2:      #8b90a0;
+            --text-3:      #555b6e;
+            --danger:      #f87171;
+            --danger-dim:  rgba(248,113,113,0.12);
+            --success:     #4ade80;
+            --success-dim: rgba(74,222,128,0.1);
+            --warning:     #fbbf24;
+            --warning-dim: rgba(251,191,36,0.1);
+            --radius-sm:   8px;
+            --radius:      14px;
+            --radius-lg:   20px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.25);
+            --shadow-hover: 0 4px 6px rgba(0,0,0,0.4), 0 20px 60px rgba(0,0,0,0.35), 0 0 0 1px var(--border-hover);
         }
 
-        .titulo{
+        /* ─────────────────────────────────────────────
+           BASE
+        ───────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; }
 
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text-1);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Subtle grain overlay for depth */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        /* Ambient glow top */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(59,130,246,0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        * { position: relative; z-index: 1; }
+
+        h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; }
+
+        a { color: var(--amber); text-decoration: none; transition: opacity 0.2s; }
+        a:hover { opacity: 0.8; }
+
+        /* ─────────────────────────────────────────────
+           SCROLLBAR
+        ───────────────────────────────────────────── */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-card-2); border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+        /* ─────────────────────────────────────────────
+           NAVBAR
+        ───────────────────────────────────────────── */
+        .navbar-custom {
+            background: rgba(13,15,20,0.85) !important;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 0.6rem 0;
+        }
+
+        .navbar-custom .navbar-brand {
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-1) !important;
+            letter-spacing: -0.4px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .brand-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: var(--amber);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #0d0f14;
+            flex-shrink: 0;
+        }
+
+        .navbar-custom .nav-link {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-2) !important;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 0.45rem 0.9rem !important;
+            border-radius: var(--radius-sm);
+            transition: color 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .navbar-custom .nav-link:hover,
+        .navbar-custom .nav-link.active {
+            color: var(--text-1) !important;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .navbar-custom .nav-link.dropdown-toggle::after {
+            border-color: var(--text-2) transparent transparent transparent;
+        }
+
+        /* Dropdown */
+        .dropdown-menu {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+            padding: 0.4rem !important;
+            margin-top: 0.5rem !important;
+        }
+
+        .dropdown-item {
+            color: var(--text-2) !important;
+            font-size: 0.875rem !important;
+            padding: 0.45rem 0.8rem !important;
+            border-radius: var(--radius-sm) !important;
+            transition: background 0.15s, color 0.15s !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255,255,255,0.06) !important;
+            color: var(--text-1) !important;
+        }
+
+        .navbar-toggler {
+            border: 1px solid var(--border) !important;
+            padding: 0.35rem 0.55rem;
+        }
+
+        .navbar-toggler-icon { filter: invert(0.6); }
+
+        .btn-logout {
+            font-size: 0.825rem;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-sm);
+            color: var(--danger) !important;
+            background: var(--danger-dim);
+            border: 1px solid rgba(248,113,113,0.2);
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(248,113,113,0.2);
+            border-color: rgba(248,113,113,0.35);
+        }
+
+        /* ─────────────────────────────────────────────
+           PAGE HEADER
+        ───────────────────────────────────────────── */
+        .page-header {
+            padding: 2.5rem 0 1.75rem;
+            animation: fadeInDown 0.5s ease both;
+        }
+
+        .page-header h2 {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.75rem;
+            color: var(--text-1);
+            margin-bottom: 0.35rem;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .page-header h2 .accent { color: var(--amber); }
+
+        .page-header .subtitle {
+            color: var(--text-2);
+            font-size: 0.92rem;
+            font-weight: 400;
+        }
+
+        /* Thin amber rule under header */
+        .page-header::after {
+            content: '';
+            display: block;
+            width: 32px;
+            height: 2px;
+            background: var(--amber);
+            border-radius: 99px;
+            margin-top: 0.9rem;
+        }
+
+        /* ─────────────────────────────────────────────
+           GLASS CARD
+        ───────────────────────────────────────────── */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1),
+                        box-shadow 0.3s cubic-bezier(0.4,0,0.2,1),
+                        border-color 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+        }
+
+        .glass-card .dashboard-icon {
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .glass-card:hover .dashboard-icon {
+            transform: scale(1.12) translateY(-2px);
+            color: var(--amber) !important;
+        }
+
+        /* ─────────────────────────────────────────────
+           ANIMATIONS
+        ───────────────────────────────────────────── */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s cubic-bezier(0.4,0,0.2,1) both;
+            will-change: transform, opacity;
+        }
+
+        .alert { animation: slideDown 0.35s ease both; }
+
+        .btn { transition: all 0.2s cubic-bezier(0.4,0,0.2,1); }
+        .btn:active { transform: scale(0.97); }
+
+        /* ─────────────────────────────────────────────
+           FORMS
+        ───────────────────────────────────────────── */
+        .form-control,
+        .form-select {
+            background: var(--bg-card-2) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-1) !important;
+            border-radius: var(--radius-sm);
+            padding: 0.65rem 1rem;
+            font-size: 0.9rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--amber) !important;
+            box-shadow: 0 0 0 3px var(--amber-dim) !important;
+            outline: none;
+        }
+
+        .form-control::placeholder { color: var(--text-3) !important; }
+        .form-select option { background: var(--bg-card-2); }
+
+        .form-label {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+            color: var(--text-2);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 0.4rem;
+        }
+
+        /* ─────────────────────────────────────────────
+           DAY TOGGLE BUTTONS
+        ───────────────────────────────────────────── */
+        .day-toggle-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .btn-check + .btn-day {
+            background: var(--bg-card-2);
+            border: 1px solid var(--border);
+            color: var(--text-2);
+            border-radius: var(--radius-sm);
+            padding: 0.45rem 0.95rem;
+            font-size: 0.83rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .btn-check:checked + .btn-day {
+            background: var(--amber-dim);
+            border-color: var(--amber);
+            color: var(--amber);
+            font-weight: 600;
+            box-shadow: 0 0 0 1px var(--amber-dim);
+        }
+
+        .btn-check + .btn-day:hover {
+            border-color: var(--border-hover);
+            color: var(--text-1);
+        }
+
+        .btn-check:checked + .btn-day:hover {
+            color: var(--amber);
+        }
+
+        /* ─────────────────────────────────────────────
+           SECTION LABELS
+        ───────────────────────────────────────────── */
+        .section-label {
+            font-family: 'Sora', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-1);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* ─────────────────────────────────────────────
+           BUTTONS
+        ───────────────────────────────────────────── */
+        .btn-primary {
+            background: var(--amber) !important;
+            border: none !important;
+            color: #0d0f14 !important;
+            font-weight: 600 !important;
+            font-size: 0.875rem !important;
+            padding: 0.6rem 1.5rem !important;
+            border-radius: var(--radius-sm) !important;
+            box-shadow: 0 2px 8px var(--amber-glow) !important;
+            letter-spacing: 0.1px;
+        }
+
+        .btn-primary:hover {
+            background: #f5b843 !important;
+            box-shadow: 0 4px 16px var(--amber-glow) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-primary {
+            border: 1px solid var(--border) !important;
+            color: var(--text-2) !important;
+            background: transparent !important;
+            border-radius: var(--radius-sm) !important;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-outline-primary:hover {
+            background: rgba(255,255,255,0.06) !important;
+            border-color: var(--border-hover) !important;
+            color: var(--text-1) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-danger {
+            border: 1px solid rgba(248,113,113,0.3) !important;
+            color: var(--danger) !important;
+            background: var(--danger-dim) !important;
+            border-radius: var(--radius-sm) !important;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .btn-outline-danger:hover {
+            background: rgba(248,113,113,0.2) !important;
+            border-color: var(--danger) !important;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.07) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-2) !important;
+            border-radius: var(--radius-sm) !important;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1) !important;
+            color: var(--text-1) !important;
+        }
+
+        /* ─────────────────────────────────────────────
+           TABLES
+        ───────────────────────────────────────────── */
+        .table-custom {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+
+        .table-custom thead th {
+            background: var(--bg-card-2);
+            color: var(--text-2);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .table-custom thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+        .table-custom thead th:last-child  { border-radius: 0 var(--radius-sm) 0 0; }
+
+        .table-custom tbody td {
+            background: var(--bg-card);
+            color: var(--text-1);
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.88rem;
+            vertical-align: middle;
+            transition: background 0.15s;
+        }
+
+        .table-custom tbody tr { transition: all 0.15s; }
+        .table-custom tbody tr:hover td { background: var(--bg-card-2); }
+        .table-custom tbody tr:last-child td { border-bottom: none; }
+        .table-custom tbody tr:last-child td:first-child { border-radius: 0 0 0 var(--radius-sm); }
+        .table-custom tbody tr:last-child td:last-child  { border-radius: 0 0 var(--radius-sm) 0; }
+
+        /* ─────────────────────────────────────────────
+           BADGES
+        ───────────────────────────────────────────── */
+        .badge-day {
+            background: var(--blue-dim);
+            color: var(--blue);
+            border: 1px solid rgba(59,130,246,0.2);
+            padding: 0.25rem 0.55rem;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            display: inline-block;
+            margin: 0.1rem;
+        }
+
+        /* ─────────────────────────────────────────────
+           ALERTS
+        ───────────────────────────────────────────── */
+        .alert-glass {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+        }
+
+        .alert-glass-success {
+            background: var(--success-dim);
+            border-color: rgba(74,222,128,0.2);
+            color: var(--success);
+        }
+
+        .alert-glass-danger {
+            background: var(--danger-dim);
+            border-color: rgba(248,113,113,0.2);
+            color: var(--danger);
+        }
+
+        .alert-glass-warning {
+            background: var(--warning-dim);
+            border-color: rgba(251,191,36,0.2);
+            color: var(--warning);
+        }
+
+        /* ─────────────────────────────────────────────
+           SECTION DIVIDERS (dashboard)
+        ───────────────────────────────────────────── */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2.5rem 0 1.5rem;
+        }
+
+        .section-divider h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-1);
+            margin: 0;
+            white-space: nowrap;
+            letter-spacing: -0.3px;
+        }
+
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .section-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 0.2rem 0.55rem;
+            border-radius: 99px;
+            background: var(--amber-dim);
+            color: var(--amber);
+            border: 1px solid rgba(245,166,35,0.25);
+        }
+
+        /* ─────────────────────────────────────────────
+           CONTENT WRAPPER & FOOTER
+        ───────────────────────────────────────────── */
+        .content-wrapper {
+            flex: 1;
+            padding-bottom: 3rem;
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 1.2rem 0;
             text-align: center;
+            color: var(--text-3);
+            font-size: 0.78rem;
+            border-top: 1px solid var(--border);
         }
 
-        .nava{
+        .footer a { color: var(--text-3); }
+        .footer a:hover { color: var(--text-2); }
 
-            border: 2px, solid, white;
-            border-radius: 12px;
-            color: aliceblue !important;
-
-
+        /* ─────────────────────────────────────────────
+           RESPONSIVE
+        ───────────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .page-header { padding: 1.5rem 0 1.25rem; }
+            .page-header h2 { font-size: 1.4rem; }
+            .glass-card { padding: 1.25rem; border-radius: var(--radius-sm); }
+            .day-toggle-group { gap: 0.3rem; }
+            .btn-check + .btn-day { padding: 0.38rem 0.7rem; font-size: 0.78rem; }
+            .table-custom thead th,
+            .table-custom tbody td { padding: 0.55rem 0.65rem; font-size: 0.78rem; }
         }
 
-        a{
-
-            color: aliceblue !important;
-
+        /* ─────────────────────────────────────────────
+           MODAL OVERRIDES
+        ───────────────────────────────────────────── */
+        .modal-content {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
         }
 
-        .body{
-
-           
-            border: 2px, solid, white;
-            border-radius: 12px;
-            padding: 10px;
-            color: black;
-            background-color: aliceblue;
-
+        .modal-header {
+            border-bottom: 1px solid var(--border) !important;
         }
 
+        .modal-footer {
+            border-top: 1px solid var(--border) !important;
+        }
+
+        .modal-title {
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            color: var(--text-1);
+        }
+
+        /* ─────────────────────────────────────────────
+           INPUT GROUP
+        ───────────────────────────────────────────── */
+        .input-group-text {
+            background: var(--bg-card-2) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-2) !important;
+        }
     </style>
-
-
-
 </head>
 
 <body>
 
-    <div class="nava">
-        <nav class="navbar navbar-expand-lg navbar-black bg-black">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#"></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="agregarHermano">Agregar hermano</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="buscar">Editar hermano</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="elegirMes">Mensajes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="github">GitHub</a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link " href="listarHermanos">Listar</a>
-                        </li>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <span class="brand-icon"><i class="bi bi-calendar-check"></i></span>
+                Predicación
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
+                aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="bi bi-house"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-people"></i> Hermanos
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/agregarHermano"><i class="bi bi-person-plus me-2"></i>Agregar</a></li>
+                            <li><a class="dropdown-item" href="/buscar"><i class="bi bi-pencil-square me-2"></i>Editar</a></li>
+                            <li><a class="dropdown-item" href="/listarHermanos"><i class="bi bi-list-ul me-2"></i>Listar</a></li>
+                            <li><a class="dropdown-item" href="/elegirMes"><i class="bi bi-chat-dots me-2"></i>Mensajes</a></li>
+                            <li><a class="dropdown-item" href="/disponibilidad"><i class="bi bi-table me-2"></i>Disponibilidad</a></li>
+                            <li><a class="dropdown-item" href="/importar"><i class="bi bi-file-earmark-arrow-up me-2"></i>Importar</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-houses"></i> Casas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/casas/agregar"><i class="bi bi-house-add me-2"></i>Agregar</a></li>
+                            <li><a class="dropdown-item" href="/casas/buscar"><i class="bi bi-pencil-square me-2"></i>Editar</a></li>
+                            <li><a class="dropdown-item" href="/casas/listar"><i class="bi bi-list-ul me-2"></i>Listar</a></li>
+                            <li><a class="dropdown-item" href="/casas/elegirMes"><i class="bi bi-chat-dots me-2"></i>Mensajes</a></li>
+                            <li><a class="dropdown-item" href="/casas/disponibilidad"><i class="bi bi-table me-2"></i>Disponibilidad</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'adminInfo' %}"><i class="bi bi-database-gear"></i> Administrar</a>
+                    </li>
+                </ul>
+                {% if user.is_authenticated %}
+                <a href="/logout/" class="btn btn-logout">
+                    <i class="bi bi-box-arrow-right me-1"></i> Salir
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
 
-                    </ul>
+    <!-- Content -->
+    <div class="content-wrapper">
+        <div class="page-header">
+            <div class="container">
+                <h2>{% block page_title %}Administrador de Disponibilidad{% endblock %}</h2>
+                <p class="subtitle">{% block page_subtitle %}Gestión de hermanos y casas para la predicación{% endblock %}</p>
+            </div>
+        </div>
+
+        <div class="container">
+            {% block body %}
+            <!-- ── Sección Hermanos ── -->
+            <div class="section-divider">
+                <span class="section-badge">Personas</span>
+                <h3><i class="bi bi-people me-2" style="color:var(--amber);"></i>Hermanos</h3>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4 col-sm-6">
+                    <a href="/agregarHermano" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.05s;">
+                            <i class="bi bi-person-plus dashboard-icon" style="font-size:2.2rem; color:var(--blue);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Agregar Hermano</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Registrar nuevo hermano con su disponibilidad</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/buscar" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.1s;">
+                            <i class="bi bi-pencil-square dashboard-icon" style="font-size:2.2rem; color:var(--blue);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Editar Hermano</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Modificar la disponibilidad de un hermano</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/listarHermanos" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.15s;">
+                            <i class="bi bi-people dashboard-icon" style="font-size:2.2rem; color:var(--blue);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Listar Hermanos</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Ver todos los hermanos y su disponibilidad</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/elegirMes" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.2s;">
+                            <i class="bi bi-chat-dots dashboard-icon" style="font-size:2.2rem; color:var(--blue);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Mensajes</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Generar mensajes de confirmación por mes</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/disponibilidad" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.25s;">
+                            <i class="bi bi-table dashboard-icon" style="font-size:2.2rem; color:var(--blue);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Disponibilidad</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Hoja de cálculo con filtros por día y turno</p>
+                        </div>
+                    </a>
                 </div>
             </div>
-        </nav>
+
+            <!-- ── Sección Casas ── -->
+            <div class="section-divider">
+                <span class="section-badge">Territorios</span>
+                <h3><i class="bi bi-houses me-2" style="color:var(--amber);"></i>Casas</h3>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4 col-sm-6">
+                    <a href="/casas/agregar" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.3s;">
+                            <i class="bi bi-house-add dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Agregar Casa</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Registrar nueva casa con su disponibilidad</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/casas/buscar" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.35s;">
+                            <i class="bi bi-pencil-square dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Editar Casa</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Modificar la disponibilidad de una casa</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/casas/listar" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.4s;">
+                            <i class="bi bi-list-ul dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Listar Casas</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Ver todas las casas y su disponibilidad</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/casas/elegirMes" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.45s;">
+                            <i class="bi bi-chat-dots dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Mensajes Casas</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Generar mensajes de confirmación de casas</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/casas/disponibilidad" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.5s;">
+                            <i class="bi bi-table dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Disponibilidad Casas</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Hoja de cálculo con filtros para casas</p>
+                        </div>
+                    </a>
+                </div>
+                </div>
+            </div>
+
+            <!-- ── Sección Administrar Info ── -->
+            <div class="section-divider">
+                <span class="section-badge">Sistema</span>
+                <h3><i class="bi bi-database-gear me-2" style="color:var(--amber);"></i>Administrar Info</h3>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4 col-sm-6">
+                    <a href="{% url 'adminInfo' %}" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.55s;">
+                            <i class="bi bi-database-gear dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Administrar Info</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Exportar e importar datos de Hermanos y Casas</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endblock %}
+
+        </div>
     </div>
-    <br><br><br>
-    <div class="titulo">
 
-        <h2>Administrador de disponibilidad de los hermanos</h2>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <span>Predicación Vicuña Mackenna &copy; 2026</span>
+        </div>
+    </footer>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    </div>
+    <!-- Page animations (once per session) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (sessionStorage.getItem('animPlayed')) return;
+            sessionStorage.setItem('animPlayed', 'true');
 
+            const cards = document.querySelectorAll('.glass-card:not(.animate-fade-in-up)');
+            cards.forEach(function (card, i) {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(16px)';
+                setTimeout(function () {
+                    card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 60 + (i * 70));
+            });
 
-
-
-
-    <div class="container body">
-        {% block body %}
-
-
-        {% endblock %}
-    </div>
-
+            const rows = document.querySelectorAll('.table-custom tbody tr');
+            rows.forEach(function (row, i) {
+                row.style.opacity = '0';
+                setTimeout(function () {
+                    row.style.transition = 'opacity 0.3s ease';
+                    row.style.opacity = '1';
+                }, 60 + (i * 30));
+            });
+        });
+    </script>
 </body>
 
 </html>

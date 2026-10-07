@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Listar Casas{% endblock %}
+{% block page_title %}Lista de Casas{% endblock %}
+{% block page_subtitle %}Todas las casas registradas y su disponibilidad{% endblock %}
+
+{% block body %}
+
+<div class="glass-card" style="padding: 1rem;">
+
+    {% if casas %}
+    <div class="table-responsive">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th><i class="bi bi-house-door me-1"></i> Nombre</th>
+                    <th><i class="bi bi-geo-alt me-1"></i> Dirección</th>
+                    <th><i class="bi bi-sun me-1"></i> Mañanas</th>
+                    <th><i class="bi bi-moon me-1"></i> Tardes</th>
+                    <th><i class="bi bi-envelope me-1"></i> Cartas Tarde</th>
+                    <th><i class="bi bi-chat-left-text me-1"></i> Comentarios</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for casa in casas %}
+                <tr>
+                    <td style="font-weight: 600;">{{ casa.nombre }}</td>
+                    <td>{{ casa.direccion }}</td>
+                    <td>
+                        {% for dia in casa.manana_list %}
+                        <span class="badge-day">{{ dia }}</span>
+                        {% empty %}
+                        <span style="color: var(--text-secondary); font-size: 0.85rem;">—</span>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for dia in casa.tarde_list %}
+                        <span class="badge-day">{{ dia }}</span>
+                        {% empty %}
+                        <span style="color: var(--text-secondary); font-size: 0.85rem;">—</span>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for dia in casa.cartas_tarde_list %}
+                        <span class="badge-day" style="background:rgba(74,222,128,0.12);color:#4ade80;border-color:rgba(74,222,128,0.2);">{{ dia }}</span>
+                        {% empty %}
+                        <span style="color: var(--text-3); font-size: 0.85rem;">—</span>
+                        {% endfor %}
+                    </td>
+                    <td>{{ casa.comentario }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-houses" style="font-size: 3rem; color: var(--text-secondary); opacity: 0.5;"></i>
+        <p class="mt-3" style="color: var(--text-secondary);">No hay casas registradas aún.</p>
+        <a href="{% url 'agregarCasa' %}" class="btn btn-primary mt-2">
+            <i class="bi bi-house-add me-1"></i> Agregar Casa
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

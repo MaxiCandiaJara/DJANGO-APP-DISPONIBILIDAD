@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión — Predicación</title>
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/calendar-check.svg" type="image/svg+xml">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg:         #0d0f14;
+            --bg-card:    #181c26;
+            --bg-card-2:  #1e2333;
+            --border:     rgba(255,255,255,0.07);
+            --amber:      #f5a623;
+            --amber-dim:  rgba(245,166,35,0.12);
+            --amber-glow: rgba(245,166,35,0.3);
+            --text-1:     #f0f2f7;
+            --text-2:     #8b90a0;
+            --text-3:     #555b6e;
+            --danger:     #f87171;
+            --danger-dim: rgba(248,113,113,0.12);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text-1);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+        }
+
+        /* Background layers */
+        .bg-ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-ambient::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 700px;
+            height: 500px;
+            background: radial-gradient(ellipse, rgba(245,166,35,0.07) 0%, transparent 65%);
+        }
+
+        .bg-ambient::after {
+            content: '';
+            position: absolute;
+            bottom: -10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(ellipse, rgba(59,130,246,0.06) 0%, transparent 65%);
+        }
+
+        /* Grain */
+        .grain {
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        /* Decorative vertical line */
+        .deco-line {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 100vh;
+            background: linear-gradient(to bottom, transparent, rgba(245,166,35,0.08) 30%, rgba(245,166,35,0.08) 70%, transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .login-wrap {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 400px;
+            padding: 1rem;
+            animation: appear 0.55s cubic-bezier(0.4,0,0.2,1) both;
+        }
+
+        @keyframes appear {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Logo area */
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--amber);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #0d0f14;
+            flex-shrink: 0;
+        }
+
+        .login-logo-text {
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-1);
+            letter-spacing: -0.3px;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 2.25rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4), 0 24px 72px rgba(0,0,0,0.3);
+        }
+
+        .login-heading {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-1);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.35rem;
+            line-height: 1.2;
+        }
+
+        .login-sub {
+            font-size: 0.875rem;
+            color: var(--text-2);
+            margin-bottom: 2rem;
+        }
+
+        /* Amber accent rule */
+        .login-rule {
+            width: 28px;
+            height: 2px;
+            background: var(--amber);
+            border-radius: 99px;
+            margin-bottom: 1.75rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: var(--text-2);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .input-group-text {
+            background: var(--bg-card-2) !important;
+            border: 1px solid var(--border) !important;
+            border-right: none !important;
+            color: var(--text-3) !important;
+            border-radius: 8px 0 0 8px !important;
+            padding: 0 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .form-control {
+            background: var(--bg-card-2) !important;
+            border: 1px solid var(--border) !important;
+            border-left: none !important;
+            color: var(--text-1) !important;
+            border-radius: 0 8px 8px 0 !important;
+            padding: 0.65rem 1rem;
+            font-size: 0.9rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .input-group:focus-within .input-group-text {
+            border-color: var(--amber) !important;
+            color: var(--amber) !important;
+        }
+
+        .input-group:focus-within .form-control {
+            border-color: var(--amber) !important;
+        }
+
+        .form-control:focus {
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        .form-control::placeholder { color: var(--text-3) !important; }
+
+        /* Outer focus ring on the whole input group */
+        .input-group:focus-within {
+            border-radius: 9px;
+            box-shadow: 0 0 0 3px var(--amber-dim);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: var(--amber);
+            border: none;
+            color: #0d0f14;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.925rem;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px var(--amber-glow);
+            transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+            letter-spacing: 0.1px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-login:hover {
+            background: #f5b843;
+            box-shadow: 0 4px 20px var(--amber-glow);
+            transform: translateY(-1px);
+            color: #0d0f14;
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        .error-alert {
+            background: var(--danger-dim);
+            border: 1px solid rgba(248,113,113,0.25);
+            color: var(--danger);
+            border-radius: 8px;
+            padding: 0.65rem 1rem;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            animation: slideDown 0.3s ease both;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-footer-text {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+
+        @media (max-width: 480px) {
+            .login-card { padding: 1.5rem; border-radius: 14px; }
+            .login-heading { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-ambient"></div>
+    <div class="grain"></div>
+    <div class="deco-line"></div>
+
+    <div class="login-wrap">
+        <div class="login-logo">
+            <div class="login-logo-icon"><i class="bi bi-calendar-check"></i></div>
+            <span class="login-logo-text">Predicación</span>
+        </div>
+
+        <div class="login-card">
+            <h1 class="login-heading">Bienvenido</h1>
+            <p class="login-sub">Vicuña Mackenna — Sistema de disponibilidad</p>
+            <div class="login-rule"></div>
+
+            {% if error %}
+            <div class="error-alert">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="/login/">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Usuario</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input type="text" class="form-control" name="username"
+                            placeholder="Tu nombre de usuario" required autofocus>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Contraseña</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="password" class="form-control" name="password"
+                            placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Ingresar
+                </button>
+            </form>
+
+            <p class="login-footer-text">
+                Acceso restringido al equipo de predicación
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
