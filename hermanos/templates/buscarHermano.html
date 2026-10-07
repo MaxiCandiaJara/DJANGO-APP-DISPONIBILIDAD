@@ -38,8 +38,13 @@
                             style="background: rgba(10,22,40,0.6); border: 1px solid var(--border-color); color: var(--blue-accent);">
                             <i class="bi bi-search"></i>
                         </span>
-                        <input type="text" class="form-control" name="nombre" placeholder="Ingresa el nombre..."
-                            required>
+                        <input type="text" class="form-control" name="nombre" list="hermanosList" placeholder="Escribe o selecciona un nombre..."
+                            required autocomplete="off">
+                        <datalist id="hermanosList">
+                            {% for h in hermanos %}
+                            <option value="{{ h.nombre }}">
+                            {% endfor %}
+                        </datalist>
                     </div>
                 </div>
 

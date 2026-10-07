@@ -51,7 +51,8 @@ def listarHermanos(request):
 
 @login_required
 def buscar(request):
-    return render(request, "buscarHermano.html")
+    hermanos = Hermano.objects.all()
+    return render(request, "buscarHermano.html", {'hermanos': hermanos})
 
 
 @login_required
@@ -447,7 +448,8 @@ def listarCasas(request):
 
 @login_required
 def buscarCasa(request):
-    return render(request, "buscarCasa.html")
+    casas = Casa.objects.all()
+    return render(request, "buscarCasa.html", {'casas': casas})
 
 
 @login_required
