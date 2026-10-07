@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Buscar Casa{% endblock %}
+{% block page_title %}Editar Casa{% endblock %}
+{% block page_subtitle %}Busca una casa por su nombre para editar o eliminar{% endblock %}
+
+{% block body %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7">
+        <div class="glass-card text-center">
+
+            {% if mensaje %}
+            <div class="alert alert-glass alert-glass-success d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2" style="font-size:1.2rem;"></i>
+                {{ mensaje }}
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="alert alert-glass alert-glass-danger d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2" style="font-size:1.2rem;"></i>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="mb-4">
+                <i class="bi bi-search" style="font-size: 3rem; color: var(--blue-accent); opacity: 0.8;"></i>
+            </div>
+
+            <form method="POST" action="{% url 'editarCasaSearch' %}">
+                {% csrf_token %}
+
+                <div class="mb-4 text-start">
+                    <label class="form-label"><i class="bi bi-house-door me-1"></i> Nombre de la casa</label>
+                    <div class="input-group">
+                        <span class="input-group-text"
+                            style="background: rgba(10,22,40,0.6); border: 1px solid var(--border-color); color: var(--blue-accent);">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control" name="nombre" placeholder="Ingresa el nombre..."
+                            required>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search me-2"></i>Buscar Casa
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

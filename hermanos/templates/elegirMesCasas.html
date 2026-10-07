@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Elegir Mes — Casas{% endblock %}
+{% block page_title %}Generar Mensajes — Casas{% endblock %}
+{% block page_subtitle %}Selecciona el mes para generar los mensajes de confirmación de casas{% endblock %}
+
+{% block body %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7">
+        <div class="glass-card text-center">
+
+            <div class="mb-4">
+                <i class="bi bi-calendar-month" style="font-size: 3rem; color: var(--blue-accent); opacity: 0.8;"></i>
+            </div>
+
+            <form method="POST" action="{% url 'mensajesCasas' %}">
+                {% csrf_token %}
+
+                <div class="mb-4 text-start">
+                    <label class="form-label"><i class="bi bi-calendar3 me-1"></i> Mes a realizar</label>
+                    <select class="form-select" name="mes" required>
+                        <option value="" disabled selected>Selecciona un mes...</option>
+                        <option value="Enero">Enero</option>
+                        <option value="Febrero">Febrero</option>
+                        <option value="Marzo">Marzo</option>
+                        <option value="Abril">Abril</option>
+                        <option value="Mayo">Mayo</option>
+                        <option value="Junio">Junio</option>
+                        <option value="Julio">Julio</option>
+                        <option value="Agosto">Agosto</option>
+                        <option value="Septiembre">Septiembre</option>
+                        <option value="Octubre">Octubre</option>
+                        <option value="Noviembre">Noviembre</option>
+                        <option value="Diciembre">Diciembre</option>
+                    </select>
+                </div>
+
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-chat-dots me-2"></i>Generar Mensajes
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

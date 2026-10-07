@@ -29,4 +29,23 @@ urlpatterns = [
     # Hoja de cálculo y datos
     path('disponibilidad', views.hojaCalculo, name="disponibilidad"),
     path('importar', views.importarJSON, name="importar"),
+
+    # ===== ADMINISTRAR INFO =====
+    path('admin-info', views.adminInfo, name="adminInfo"),
+    path('exportar/hermanos', views.exportarHermanos, name="exportarHermanos"),
+    path('exportar/casas', views.exportarCasas, name="exportarCasas"),
+    path('importar/casas', views.importarCasas, name="importarCasas"),
+
+
+    # ===== CASAS =====
+    path('casas/agregar', views.agregarCasa, name="agregarCasa"),
+    path('casas/agregarPost', views.agregarCasaPost, name="agregarCasaPost"),
+    path('casas/listar', views.listarCasas, name="listarCasas"),
+    path('casas/buscar', views.buscarCasa, name="buscarCasa"),
+    path('casas/editar', views.editarCasaSearch, name="editarCasaSearch"),
+    path('casas/editarPost', views.editarCasaPost, name="editarCasaPost"),
+    path('casas/eliminar', views.eliminarCasa, name="eliminarCasa"),
+    path('casas/disponibilidad', views.disponibilidadCasas, name="disponibilidadCasas"),
+    path('casas/elegirMes', views.elegirMesCasas, name="elegirMesCasas"),
+    path('casas/mensajes', views.mensajesCasas, name="mensajesCasas"),
 ]

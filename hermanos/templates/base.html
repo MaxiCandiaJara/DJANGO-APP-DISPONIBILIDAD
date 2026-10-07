@@ -1,90 +1,152 @@
 <!DOCTYPE html>
-<html lang="es" data-bs-theme="dark">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Disponibilidad{% endblock %} — Predicación</title>
-    <link rel="icon" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/calendar-check.svg"
-        type="image/svg+xml">
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/calendar-check.svg" type="image/svg+xml">
 
     <!-- Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts: Sora (display) + DM Sans (body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
+        /* ─────────────────────────────────────────────
+           TOKENS
+        ───────────────────────────────────────────── */
         :root {
-            --bg-primary: #0a1628;
-            --bg-secondary: #0f2035;
-            --bg-card: rgba(15, 32, 53, 0.7);
-            --blue-primary: #2563eb;
-            --blue-hover: #3b82f6;
-            --blue-accent: #60a5fa;
-            --blue-light: #93c5fd;
-            --blue-dark: #1e40af;
-            --navbar-bg: #0c1a2e;
-            --text-primary: #e2e8f0;
-            --text-secondary: #94a3b8;
-            --border-color: rgba(37, 99, 235, 0.2);
-            --glass-bg: rgba(15, 32, 53, 0.6);
-            --glass-border: rgba(96, 165, 250, 0.15);
+            --bg:          #0d0f14;
+            --bg-2:        #13161d;
+            --bg-card:     #181c26;
+            --bg-card-2:   #1e2333;
+            --border:      rgba(255,255,255,0.07);
+            --border-hover:rgba(255,255,255,0.14);
+            --amber:       #f5a623;
+            --amber-dim:   rgba(245,166,35,0.12);
+            --amber-glow:  rgba(245,166,35,0.25);
+            --blue:        #3b82f6;
+            --blue-dim:    rgba(59,130,246,0.12);
+            --text-1:      #f0f2f7;
+            --text-2:      #8b90a0;
+            --text-3:      #555b6e;
+            --danger:      #f87171;
+            --danger-dim:  rgba(248,113,113,0.12);
+            --success:     #4ade80;
+            --success-dim: rgba(74,222,128,0.1);
+            --warning:     #fbbf24;
+            --warning-dim: rgba(251,191,36,0.1);
+            --radius-sm:   8px;
+            --radius:      14px;
+            --radius-lg:   20px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.25);
+            --shadow-hover: 0 4px 6px rgba(0,0,0,0.4), 0 20px 60px rgba(0,0,0,0.35), 0 0 0 1px var(--border-hover);
         }
 
-        * {
-            font-family: 'Inter', sans-serif;
-        }
+        /* ─────────────────────────────────────────────
+           BASE
+        ───────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            background: var(--bg-primary);
-            background-image:
-                radial-gradient(ellipse at 20% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(96, 165, 250, 0.06) 0%, transparent 50%);
-            color: var(--text-primary);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text-1);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ===== NAVBAR ===== */
+        /* Subtle grain overlay for depth */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        /* Ambient glow top */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(59,130,246,0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        * { position: relative; z-index: 1; }
+
+        h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; }
+
+        a { color: var(--amber); text-decoration: none; transition: opacity 0.2s; }
+        a:hover { opacity: 0.8; }
+
+        /* ─────────────────────────────────────────────
+           SCROLLBAR
+        ───────────────────────────────────────────── */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-card-2); border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+        /* ─────────────────────────────────────────────
+           NAVBAR
+        ───────────────────────────────────────────── */
         .navbar-custom {
-            background: var(--navbar-bg) !important;
-            border-bottom: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 0.8rem 0;
+            background: rgba(13,15,20,0.85) !important;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 0.6rem 0;
         }
 
         .navbar-custom .navbar-brand {
+            font-family: 'Sora', sans-serif;
             font-weight: 700;
-            font-size: 1.15rem;
-            color: var(--blue-accent) !important;
-            letter-spacing: -0.3px;
+            font-size: 1.05rem;
+            color: var(--text-1) !important;
+            letter-spacing: -0.4px;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
 
-        .navbar-custom .navbar-brand .brand-icon {
-            background: linear-gradient(135deg, var(--blue-primary), var(--blue-accent));
-            width: 32px;
-            height: 32px;
+        .brand-icon {
+            width: 30px;
+            height: 30px;
             border-radius: 8px;
+            background: var(--amber);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            color: #0d0f14;
+            flex-shrink: 0;
         }
 
         .navbar-custom .nav-link {
-            color: var(--text-secondary) !important;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-2) !important;
             font-weight: 500;
-            font-size: 0.9rem;
-            padding: 0.5rem 1rem !important;
-            border-radius: 8px;
-            transition: all 0.25s ease;
+            font-size: 0.875rem;
+            padding: 0.45rem 0.9rem !important;
+            border-radius: var(--radius-sm);
+            transition: color 0.2s, background 0.2s;
             display: flex;
             align-items: center;
             gap: 0.4rem;
@@ -92,266 +154,314 @@
 
         .navbar-custom .nav-link:hover,
         .navbar-custom .nav-link.active {
-            color: #fff !important;
-            background: rgba(37, 99, 235, 0.15);
+            color: var(--text-1) !important;
+            background: rgba(255,255,255,0.06);
         }
 
-        .navbar-custom .nav-link i {
-            font-size: 1.05rem;
+        .navbar-custom .nav-link.dropdown-toggle::after {
+            border-color: var(--text-2) transparent transparent transparent;
+        }
+
+        /* Dropdown */
+        .dropdown-menu {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+            padding: 0.4rem !important;
+            margin-top: 0.5rem !important;
+        }
+
+        .dropdown-item {
+            color: var(--text-2) !important;
+            font-size: 0.875rem !important;
+            padding: 0.45rem 0.8rem !important;
+            border-radius: var(--radius-sm) !important;
+            transition: background 0.15s, color 0.15s !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255,255,255,0.06) !important;
+            color: var(--text-1) !important;
         }
 
         .navbar-toggler {
-            border: 1px solid var(--glass-border) !important;
-            padding: 0.4rem 0.6rem;
+            border: 1px solid var(--border) !important;
+            padding: 0.35rem 0.55rem;
         }
 
-        .navbar-toggler-icon {
-            filter: invert(1);
-        }
+        .navbar-toggler-icon { filter: invert(0.6); }
 
         .btn-logout {
-            background: rgba(239, 68, 68, 0.12);
-            color: #f87171 !important;
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            font-size: 0.825rem;
             font-weight: 500;
-            font-size: 0.85rem;
             padding: 0.4rem 1rem;
-            border-radius: 8px;
-            transition: all 0.25s ease;
+            border-radius: var(--radius-sm);
+            color: var(--danger) !important;
+            background: var(--danger-dim);
+            border: 1px solid rgba(248,113,113,0.2);
+            transition: background 0.2s, border-color 0.2s;
         }
 
         .btn-logout:hover {
-            background: rgba(239, 68, 68, 0.25);
-            color: #fca5a5 !important;
+            background: rgba(248,113,113,0.2);
+            border-color: rgba(248,113,113,0.35);
         }
 
-        /* ===== PAGE HEADER ===== */
+        /* ─────────────────────────────────────────────
+           PAGE HEADER
+        ───────────────────────────────────────────── */
         .page-header {
-            text-align: center;
-            padding: 2.5rem 0 1.5rem;
+            padding: 2.5rem 0 1.75rem;
+            animation: fadeInDown 0.5s ease both;
         }
 
         .page-header h2 {
-            font-weight: 700;
-            font-size: 1.6rem;
-            background: linear-gradient(135deg, var(--blue-accent), var(--blue-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.3rem;
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.75rem;
+            color: var(--text-1);
+            margin-bottom: 0.35rem;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
         }
 
+        .page-header h2 .accent { color: var(--amber); }
+
         .page-header .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+            color: var(--text-2);
+            font-size: 0.92rem;
             font-weight: 400;
         }
 
-        /* ===== GLASS CARD ===== */
+        /* Thin amber rule under header */
+        .page-header::after {
+            content: '';
+            display: block;
+            width: 32px;
+            height: 2px;
+            background: var(--amber);
+            border-radius: 99px;
+            margin-top: 0.9rem;
+        }
+
+        /* ─────────────────────────────────────────────
+           GLASS CARD
+        ───────────────────────────────────────────── */
         .glass-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 2rem;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1),
+                        box-shadow 0.3s cubic-bezier(0.4,0,0.2,1),
+                        border-color 0.3s;
         }
 
         .glass-card:hover {
-            border-color: rgba(96, 165, 250, 0.35);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(37, 99, 235, 0.12);
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes iconPulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.15);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-fade-in-up {
-            animation: fadeInUp 0.5s ease forwards;
-            opacity: 0;
-        }
-
-        .page-header {
-            animation: fadeIn 0.6s ease;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
         }
 
         .glass-card .dashboard-icon {
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, color 0.3s ease;
         }
 
         .glass-card:hover .dashboard-icon {
-            animation: iconPulse 0.6s ease;
+            transform: scale(1.12) translateY(-2px);
+            color: var(--amber) !important;
         }
 
-        .alert {
-            animation: slideDown 0.4s ease;
+        /* ─────────────────────────────────────────────
+           ANIMATIONS
+        ───────────────────────────────────────────── */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-12px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        .btn {
-            transition: all 0.25s ease;
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        .btn:active {
-            transform: scale(0.96);
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== FORM ELEMENTS ===== */
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s cubic-bezier(0.4,0,0.2,1) both;
+            will-change: transform, opacity;
+        }
+
+        .alert { animation: slideDown 0.35s ease both; }
+
+        .btn { transition: all 0.2s cubic-bezier(0.4,0,0.2,1); }
+        .btn:active { transform: scale(0.97); }
+
+        /* ─────────────────────────────────────────────
+           FORMS
+        ───────────────────────────────────────────── */
         .form-control,
         .form-select {
-            background: rgba(10, 22, 40, 0.6) !important;
-            border: 1px solid var(--border-color) !important;
-            color: var(--text-primary) !important;
-            border-radius: 10px;
+            background: var(--bg-card-2) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-1) !important;
+            border-radius: var(--radius-sm);
             padding: 0.65rem 1rem;
             font-size: 0.9rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.25s, box-shadow 0.25s;
         }
 
         .form-control:focus,
         .form-select:focus {
-            border-color: var(--blue-primary) !important;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+            border-color: var(--amber) !important;
+            box-shadow: 0 0 0 3px var(--amber-dim) !important;
+            outline: none;
         }
 
-        .form-control::placeholder {
-            color: var(--text-secondary) !important;
-        }
+        .form-control::placeholder { color: var(--text-3) !important; }
+        .form-select option { background: var(--bg-card-2); }
 
         .form-label {
+            font-family: 'DM Sans', sans-serif;
             font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+            font-size: 0.78rem;
+            color: var(--text-2);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.7px;
             margin-bottom: 0.4rem;
         }
 
-        /* ===== TOGGLE BUTTONS (days) ===== */
+        /* ─────────────────────────────────────────────
+           DAY TOGGLE BUTTONS
+        ───────────────────────────────────────────── */
         .day-toggle-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.45rem;
         }
 
-        .btn-check+.btn-day {
-            background: rgba(10, 22, 40, 0.5);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            border-radius: 10px;
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
+        .btn-check + .btn-day {
+            background: var(--bg-card-2);
+            border: 1px solid var(--border);
+            color: var(--text-2);
+            border-radius: var(--radius-sm);
+            padding: 0.45rem 0.95rem;
+            font-size: 0.83rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
+            user-select: none;
         }
 
-        .btn-check:checked+.btn-day {
-            background: linear-gradient(135deg, var(--blue-primary), var(--blue-hover));
-            border-color: var(--blue-primary);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-check+.btn-day:hover {
-            border-color: var(--blue-accent);
-            color: var(--blue-accent);
-        }
-
-        .btn-check:checked+.btn-day:hover {
-            color: #fff;
-        }
-
-        /* ===== SECTION LABELS ===== */
-        .section-label {
-            font-size: 0.95rem;
+        .btn-check:checked + .btn-day {
+            background: var(--amber-dim);
+            border-color: var(--amber);
+            color: var(--amber);
             font-weight: 600;
-            color: var(--text-primary);
+            box-shadow: 0 0 0 1px var(--amber-dim);
+        }
+
+        .btn-check + .btn-day:hover {
+            border-color: var(--border-hover);
+            color: var(--text-1);
+        }
+
+        .btn-check:checked + .btn-day:hover {
+            color: var(--amber);
+        }
+
+        /* ─────────────────────────────────────────────
+           SECTION LABELS
+        ───────────────────────────────────────────── */
+        .section-label {
+            font-family: 'Sora', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-1);
             margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .section-label .icon {
-            font-size: 1.1rem;
-        }
-
-        /* ===== BUTTONS ===== */
+        /* ─────────────────────────────────────────────
+           BUTTONS
+        ───────────────────────────────────────────── */
         .btn-primary {
-            background: linear-gradient(135deg, var(--blue-primary), var(--blue-hover)) !important;
+            background: var(--amber) !important;
             border: none !important;
-            font-weight: 600;
-            padding: 0.65rem 1.5rem;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+            color: #0d0f14 !important;
+            font-weight: 600 !important;
+            font-size: 0.875rem !important;
+            padding: 0.6rem 1.5rem !important;
+            border-radius: var(--radius-sm) !important;
+            box-shadow: 0 2px 8px var(--amber-glow) !important;
+            letter-spacing: 0.1px;
         }
 
         .btn-primary:hover {
+            background: #f5b843 !important;
+            box-shadow: 0 4px 16px var(--amber-glow) !important;
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
         }
 
         .btn-outline-primary {
-            border: 1px solid var(--blue-primary) !important;
-            color: var(--blue-accent) !important;
-            border-radius: 10px;
+            border: 1px solid var(--border) !important;
+            color: var(--text-2) !important;
+            background: transparent !important;
+            border-radius: var(--radius-sm) !important;
+            font-size: 0.875rem;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
 
         .btn-outline-primary:hover {
-            background: var(--blue-primary) !important;
-            color: #fff !important;
+            background: rgba(255,255,255,0.06) !important;
+            border-color: var(--border-hover) !important;
+            color: var(--text-1) !important;
+            transform: translateY(-1px);
         }
 
-        /* ===== TABLES ===== */
+        .btn-outline-danger {
+            border: 1px solid rgba(248,113,113,0.3) !important;
+            color: var(--danger) !important;
+            background: var(--danger-dim) !important;
+            border-radius: var(--radius-sm) !important;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .btn-outline-danger:hover {
+            background: rgba(248,113,113,0.2) !important;
+            border-color: var(--danger) !important;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.07) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-2) !important;
+            border-radius: var(--radius-sm) !important;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1) !important;
+            color: var(--text-1) !important;
+        }
+
+        /* ─────────────────────────────────────────────
+           TABLES
+        ───────────────────────────────────────────── */
         .table-custom {
             border-collapse: separate;
             border-spacing: 0;
@@ -359,147 +469,182 @@
         }
 
         .table-custom thead th {
-            background: linear-gradient(135deg, var(--blue-dark), var(--blue-primary));
-            color: #fff;
+            background: var(--bg-card-2);
+            color: var(--text-2);
+            font-family: 'DM Sans', sans-serif;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 0.85rem 1rem;
-            border: none;
+            letter-spacing: 0.8px;
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
         }
 
-        .table-custom thead th:first-child {
-            border-radius: 12px 0 0 0;
-        }
-
-        .table-custom thead th:last-child {
-            border-radius: 0 12px 0 0;
-        }
+        .table-custom thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+        .table-custom thead th:last-child  { border-radius: 0 var(--radius-sm) 0 0; }
 
         .table-custom tbody td {
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
+            background: var(--bg-card);
+            color: var(--text-1);
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.88rem;
             vertical-align: middle;
+            transition: background 0.15s;
         }
 
-        .table-custom tbody tr {
-            transition: all 0.2s ease;
-        }
+        .table-custom tbody tr { transition: all 0.15s; }
+        .table-custom tbody tr:hover td { background: var(--bg-card-2); }
+        .table-custom tbody tr:last-child td { border-bottom: none; }
+        .table-custom tbody tr:last-child td:first-child { border-radius: 0 0 0 var(--radius-sm); }
+        .table-custom tbody tr:last-child td:last-child  { border-radius: 0 0 var(--radius-sm) 0; }
 
-        .table-custom tbody tr:hover td {
-            background: rgba(37, 99, 235, 0.08);
-        }
-
-        .table-custom tbody tr:last-child td:first-child {
-            border-radius: 0 0 0 12px;
-        }
-
-        .table-custom tbody tr:last-child td:last-child {
-            border-radius: 0 0 12px 0;
-        }
-
-        /* ===== BADGES ===== */
+        /* ─────────────────────────────────────────────
+           BADGES
+        ───────────────────────────────────────────── */
         .badge-day {
-            background: rgba(37, 99, 235, 0.15);
-            color: var(--blue-accent);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-            padding: 0.3rem 0.6rem;
+            background: var(--blue-dim);
+            color: var(--blue);
+            border: 1px solid rgba(59,130,246,0.2);
+            padding: 0.25rem 0.55rem;
             border-radius: 6px;
-            font-size: 0.78rem;
-            font-weight: 500;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
             display: inline-block;
-            margin: 0.15rem;
+            margin: 0.1rem;
         }
 
-        /* ===== ALERTS ===== */
+        /* ─────────────────────────────────────────────
+           ALERTS
+        ───────────────────────────────────────────── */
         .alert-glass {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            backdrop-filter: blur(12px);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
         }
 
         .alert-glass-success {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.2);
-            color: #86efac;
+            background: var(--success-dim);
+            border-color: rgba(74,222,128,0.2);
+            color: var(--success);
         }
 
         .alert-glass-danger {
-            background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
+            background: var(--danger-dim);
+            border-color: rgba(248,113,113,0.2);
+            color: var(--danger);
         }
 
         .alert-glass-warning {
-            background: rgba(234, 179, 8, 0.1);
-            border-color: rgba(234, 179, 8, 0.2);
-            color: #fde68a;
+            background: var(--warning-dim);
+            border-color: rgba(251,191,36,0.2);
+            color: var(--warning);
         }
 
-        /* ===== FOOTER ===== */
-        .footer {
-            margin-top: auto;
-            padding: 1.5rem 0;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            border-top: 1px solid var(--glass-border);
+        /* ─────────────────────────────────────────────
+           SECTION DIVIDERS (dashboard)
+        ───────────────────────────────────────────── */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2.5rem 0 1.5rem;
         }
 
-        /* ===== CONTENT WRAPPER ===== */
+        .section-divider h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-1);
+            margin: 0;
+            white-space: nowrap;
+            letter-spacing: -0.3px;
+        }
+
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .section-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 0.2rem 0.55rem;
+            border-radius: 99px;
+            background: var(--amber-dim);
+            color: var(--amber);
+            border: 1px solid rgba(245,166,35,0.25);
+        }
+
+        /* ─────────────────────────────────────────────
+           CONTENT WRAPPER & FOOTER
+        ───────────────────────────────────────────── */
         .content-wrapper {
             flex: 1;
-            padding-bottom: 2rem;
+            padding-bottom: 3rem;
         }
 
-        /* ===== RESPONSIVE ===== */
+        .footer {
+            margin-top: auto;
+            padding: 1.2rem 0;
+            text-align: center;
+            color: var(--text-3);
+            font-size: 0.78rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer a { color: var(--text-3); }
+        .footer a:hover { color: var(--text-2); }
+
+        /* ─────────────────────────────────────────────
+           RESPONSIVE
+        ───────────────────────────────────────────── */
         @media (max-width: 768px) {
-            .page-header {
-                padding: 1.5rem 0 1rem;
-            }
-
-            .page-header h2 {
-                font-size: 1.3rem;
-            }
-
-            .glass-card {
-                padding: 1.25rem;
-                border-radius: 12px;
-            }
-
-            .day-toggle-group {
-                gap: 0.35rem;
-            }
-
-            .btn-check+.btn-day {
-                padding: 0.4rem 0.75rem;
-                font-size: 0.8rem;
-            }
-
+            .page-header { padding: 1.5rem 0 1.25rem; }
+            .page-header h2 { font-size: 1.4rem; }
+            .glass-card { padding: 1.25rem; border-radius: var(--radius-sm); }
+            .day-toggle-group { gap: 0.3rem; }
+            .btn-check + .btn-day { padding: 0.38rem 0.7rem; font-size: 0.78rem; }
             .table-custom thead th,
-            .table-custom tbody td {
-                padding: 0.6rem 0.5rem;
-                font-size: 0.8rem;
-            }
+            .table-custom tbody td { padding: 0.55rem 0.65rem; font-size: 0.78rem; }
         }
 
-        /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar {
-            width: 6px;
+        /* ─────────────────────────────────────────────
+           MODAL OVERRIDES
+        ───────────────────────────────────────────── */
+        .modal-content {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
         }
 
-        ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
+        .modal-header {
+            border-bottom: 1px solid var(--border) !important;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--blue-primary);
-            border-radius: 3px;
+        .modal-footer {
+            border-top: 1px solid var(--border) !important;
+        }
+
+        .modal-title {
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            color: var(--text-1);
+        }
+
+        /* ─────────────────────────────────────────────
+           INPUT GROUP
+        ───────────────────────────────────────────── */
+        .input-group-text {
+            background: var(--bg-card-2) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-2) !important;
         }
     </style>
 </head>
@@ -522,28 +667,40 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/"><i class="bi bi-house"></i> Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/agregarHermano"><i class="bi bi-person-plus"></i> Agregar</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-people"></i> Hermanos
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/agregarHermano"><i class="bi bi-person-plus me-2"></i>Agregar</a></li>
+                            <li><a class="dropdown-item" href="/buscar"><i class="bi bi-pencil-square me-2"></i>Editar</a></li>
+                            <li><a class="dropdown-item" href="/listarHermanos"><i class="bi bi-list-ul me-2"></i>Listar</a></li>
+                            <li><a class="dropdown-item" href="/elegirMes"><i class="bi bi-chat-dots me-2"></i>Mensajes</a></li>
+                            <li><a class="dropdown-item" href="/disponibilidad"><i class="bi bi-table me-2"></i>Disponibilidad</a></li>
+                            <li><a class="dropdown-item" href="/importar"><i class="bi bi-file-earmark-arrow-up me-2"></i>Importar</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-houses"></i> Casas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/casas/agregar"><i class="bi bi-house-add me-2"></i>Agregar</a></li>
+                            <li><a class="dropdown-item" href="/casas/buscar"><i class="bi bi-pencil-square me-2"></i>Editar</a></li>
+                            <li><a class="dropdown-item" href="/casas/listar"><i class="bi bi-list-ul me-2"></i>Listar</a></li>
+                            <li><a class="dropdown-item" href="/casas/elegirMes"><i class="bi bi-chat-dots me-2"></i>Mensajes</a></li>
+                            <li><a class="dropdown-item" href="/casas/disponibilidad"><i class="bi bi-table me-2"></i>Disponibilidad</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/buscar"><i class="bi bi-pencil-square"></i> Editar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/listarHermanos"><i class="bi bi-people"></i> Listar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/elegirMes"><i class="bi bi-chat-dots"></i> Mensajes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/disponibilidad"><i class="bi bi-table"></i> Disponibilidad</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/importar"><i class="bi bi-file-earmark-arrow-up"></i> Importar</a>
+                        <a class="nav-link" href="{% url 'adminInfo' %}"><i class="bi bi-database-gear"></i> Administrar</a>
                     </li>
                 </ul>
                 {% if user.is_authenticated %}
                 <a href="/logout/" class="btn btn-logout">
-                    <i class="bi bi-box-arrow-right"></i> Salir
+                    <i class="bi bi-box-arrow-right me-1"></i> Salir
                 </a>
                 {% endif %}
             </div>
@@ -555,76 +712,140 @@
         <div class="page-header">
             <div class="container">
                 <h2>{% block page_title %}Administrador de Disponibilidad{% endblock %}</h2>
-                <p class="subtitle">{% block page_subtitle %}Gestión de hermanos para la predicación{% endblock %}</p>
+                <p class="subtitle">{% block page_subtitle %}Gestión de hermanos y casas para la predicación{% endblock %}</p>
             </div>
         </div>
 
         <div class="container">
             {% block body %}
-            <!-- Welcome content for index -->
-            <div class="row g-4 justify-content-center">
-                <div class="col-md-4">
+            <!-- ── Sección Hermanos ── -->
+            <div class="section-divider">
+                <span class="section-badge">Personas</span>
+                <h3><i class="bi bi-people me-2" style="color:var(--amber);"></i>Hermanos</h3>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4 col-sm-6">
                     <a href="/agregarHermano" class="text-decoration-none">
-                        <div class="glass-card text-center h-100 animate-fade-in-up"
-                            style="cursor:pointer; animation-delay: 0.05s;">
-                            <i class="bi bi-person-plus dashboard-icon"
-                                style="font-size: 2.5rem; color: var(--blue-accent);"></i>
-                            <h5 class="mt-3 mb-2" style="color: var(--text-primary);">Agregar Hermano</h5>
-                            <p class="mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">Registrar nuevo
-                                hermano con su disponibilidad</p>
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.05s;">
+                            <i class="bi bi-person-plus dashboard-icon" style="font-size:2.2rem; color:var(--blue);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Agregar Hermano</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Registrar nuevo hermano con su disponibilidad</p>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <a href="/buscar" class="text-decoration-none">
-                        <div class="glass-card text-center h-100 animate-fade-in-up"
-                            style="cursor:pointer; animation-delay: 0.12s;">
-                            <i class="bi bi-pencil-square dashboard-icon"
-                                style="font-size: 2.5rem; color: var(--blue-accent);"></i>
-                            <h5 class="mt-3 mb-2" style="color: var(--text-primary);">Editar Hermano</h5>
-                            <p class="mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">Modificar la
-                                disponibilidad de un hermano</p>
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.1s;">
+                            <i class="bi bi-pencil-square dashboard-icon" style="font-size:2.2rem; color:var(--blue);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Editar Hermano</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Modificar la disponibilidad de un hermano</p>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <a href="/listarHermanos" class="text-decoration-none">
-                        <div class="glass-card text-center h-100 animate-fade-in-up"
-                            style="cursor:pointer; animation-delay: 0.19s;">
-                            <i class="bi bi-people dashboard-icon"
-                                style="font-size: 2.5rem; color: var(--blue-accent);"></i>
-                            <h5 class="mt-3 mb-2" style="color: var(--text-primary);">Listar Hermanos</h5>
-                            <p class="mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">Ver todos los
-                                hermanos y su disponibilidad</p>
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.15s;">
+                            <i class="bi bi-people dashboard-icon" style="font-size:2.2rem; color:var(--blue);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Listar Hermanos</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Ver todos los hermanos y su disponibilidad</p>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <a href="/elegirMes" class="text-decoration-none">
-                        <div class="glass-card text-center h-100 animate-fade-in-up"
-                            style="cursor:pointer; animation-delay: 0.26s;">
-                            <i class="bi bi-chat-dots dashboard-icon"
-                                style="font-size: 2.5rem; color: var(--blue-accent);"></i>
-                            <h5 class="mt-3 mb-2" style="color: var(--text-primary);">Mensajes</h5>
-                            <p class="mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">Generar mensajes
-                                de confirmación por mes</p>
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.2s;">
+                            <i class="bi bi-chat-dots dashboard-icon" style="font-size:2.2rem; color:var(--blue);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Mensajes</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Generar mensajes de confirmación por mes</p>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <a href="/disponibilidad" class="text-decoration-none">
-                        <div class="glass-card text-center h-100 animate-fade-in-up"
-                            style="cursor:pointer; animation-delay: 0.33s;">
-                            <i class="bi bi-table dashboard-icon"
-                                style="font-size: 2.5rem; color: var(--blue-accent);"></i>
-                            <h5 class="mt-3 mb-2" style="color: var(--text-primary);">Disponibilidad</h5>
-                            <p class="mb-0" style="color: var(--text-secondary); font-size: 0.85rem;">Hoja de cálculo
-                                con filtros por día y turno</p>
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.25s;">
+                            <i class="bi bi-table dashboard-icon" style="font-size:2.2rem; color:var(--blue);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Disponibilidad</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Hoja de cálculo con filtros por día y turno</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ── Sección Casas ── -->
+            <div class="section-divider">
+                <span class="section-badge">Territorios</span>
+                <h3><i class="bi bi-houses me-2" style="color:var(--amber);"></i>Casas</h3>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4 col-sm-6">
+                    <a href="/casas/agregar" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.3s;">
+                            <i class="bi bi-house-add dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Agregar Casa</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Registrar nueva casa con su disponibilidad</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/casas/buscar" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.35s;">
+                            <i class="bi bi-pencil-square dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Editar Casa</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Modificar la disponibilidad de una casa</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/casas/listar" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.4s;">
+                            <i class="bi bi-list-ul dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Listar Casas</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Ver todas las casas y su disponibilidad</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/casas/elegirMes" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.45s;">
+                            <i class="bi bi-chat-dots dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Mensajes Casas</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Generar mensajes de confirmación de casas</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <a href="/casas/disponibilidad" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.5s;">
+                            <i class="bi bi-table dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Disponibilidad Casas</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Hoja de cálculo con filtros para casas</p>
+                        </div>
+                    </a>
+                </div>
+                </div>
+            </div>
+
+            <!-- ── Sección Administrar Info ── -->
+            <div class="section-divider">
+                <span class="section-badge">Sistema</span>
+                <h3><i class="bi bi-database-gear me-2" style="color:var(--amber);"></i>Administrar Info</h3>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4 col-sm-6">
+                    <a href="{% url 'adminInfo' %}" class="text-decoration-none">
+                        <div class="glass-card text-center h-100 animate-fade-in-up" style="cursor:pointer; animation-delay:0.55s;">
+                            <i class="bi bi-database-gear dashboard-icon" style="font-size:2.2rem; color:var(--amber);"></i>
+                            <h5 class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:1rem;color:var(--text-1);">Administrar Info</h5>
+                            <p class="mb-0" style="color:var(--text-2);font-size:0.82rem;">Exportar e importar datos de Hermanos y Casas</p>
                         </div>
                     </a>
                 </div>
             </div>
             {% endblock %}
+
         </div>
     </div>
 
@@ -638,7 +859,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Page transition animation (solo primera visita de la sesión) -->
+    <!-- Page animations (once per session) -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             if (sessionStorage.getItem('animPlayed')) return;
@@ -649,21 +870,19 @@
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(16px)';
                 setTimeout(function () {
-                    card.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+                    card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
-                }, 60 + (i * 80));
+                }, 60 + (i * 70));
             });
 
             const rows = document.querySelectorAll('.table-custom tbody tr');
             rows.forEach(function (row, i) {
                 row.style.opacity = '0';
-                row.style.transform = 'translateX(-12px)';
                 setTimeout(function () {
-                    row.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                    row.style.transition = 'opacity 0.3s ease';
                     row.style.opacity = '1';
-                    row.style.transform = 'translateX(0)';
-                }, 80 + (i * 40));
+                }, 60 + (i * 30));
             });
         });
     </script>
